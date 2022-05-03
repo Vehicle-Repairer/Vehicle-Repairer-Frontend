@@ -41,7 +41,8 @@ import {
     NPagination,
     NPopover,
     NProgress,
-    NRate,
+    NRadio,
+    NRadioGroup,
     NScrollbar,
     NSelect,
     NSlider,
@@ -51,11 +52,13 @@ import {
     NSwitch,
     NTabPane,
     NTabs,
+    NText,
     NTag,
     NThing,
     NTimeline,
     NTimelineItem,
-    NTooltip
+    NTooltip,
+    NRate
 } from 'naive-ui';
 
 /** 按需引入naiveUI */
@@ -97,7 +100,11 @@ export default function setupNaiveUI(app: App) {
             NMenu,
             NMessageProvider,
             NNotificationProvider,
+            NPagination,
             NPopover,
+            NProgress,
+            NRadio,
+            NRadioGroup,
             NScrollbar,
             NSelect,
             NSpace,
@@ -107,6 +114,7 @@ export default function setupNaiveUI(app: App) {
             NTabs,
             NTabPane,
             NTag,
+            NText,
             NThing,
             NTimeline,
             NTimelineItem,

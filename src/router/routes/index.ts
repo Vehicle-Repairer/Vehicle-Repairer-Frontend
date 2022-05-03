@@ -1,24 +1,35 @@
 export const sidebarRoutes: AuthRoute.Route[] = [
     {
+        name: 'home',
+        path: '/home',
+        component: 'self',
+        meta: {
+            title: '主页',
+            icon: 'mdi:clipboard-account',
+            requiresAuth: true,
+            singleLayout: 'basic'
+        }
+    },
+    {
         name: 'dashboard',
         path: '/dashboard',
         component: 'self',
         meta: {
-            title: '控制台',
-            icon: 'mdi:cards-spade',
+            title: '仪表盘',
+            icon: 'mdi:clipboard-account',
             requiresAuth: true,
-            singleLayout: 'basic' // 作为单级路由的父级路由布局组件
+            singleLayout: 'basic'
         }
     },
     {
-        name: 'workbench',
-        path: '/workbench',
+        name:'test',
+        path: '/test',
         component: 'self',
         meta: {
-            title: '工作台',
-            icon: 'mdi:cards-heart-outline',
+            title: '测试',
+            icon: 'ion:logo-alipay',
             requiresAuth: true,
-            singleLayout: 'basic' // 作为单级路由的父级路由布局组件
+            singleLayout: 'basic'
         }
     }
 ];
@@ -28,9 +39,9 @@ export const constantRoutes: AuthRoute.Route[] = [
     {
         name: 'root',
         path: '/',
-        redirect: '/dashboard',
+        redirect: '/home',
         meta: {
-            title: '工作台'
+            title: '主页'
         }
     },
     {
@@ -42,11 +53,11 @@ export const constantRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name: 'active-account',
-        path: '/active-account',
+        name: 'active',
+        path: '/active',
         component: 'self',
         meta: {
-            title: '激活账户'
+            title: '激活'
         }
     },
     {
@@ -76,6 +87,7 @@ export const constantRoutes: AuthRoute.Route[] = [
             singleLayout: 'blank'
         }
     },
+    // 匹配无效路径的路由
     {
         name: 'not-found-page',
         path: '/:pathMatch(.*)*',

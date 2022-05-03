@@ -39,14 +39,14 @@ export default class CustomAxiosInstance {
             timeout: REQUEST_TIMEOUT
         };
         Object.assign(defaultConfig, axiosConfig);
-        this.instance = (axios as any).create(defaultConfig);
+        this.instance = axios.create(defaultConfig);
         this.setInterceptor();
     }
 
     /** 设置请求拦截器 */
     setInterceptor() {
-        (this.instance as any).interceptors.request.use(
-            async (config: any) => {
+        this.instance.interceptors.request.use(
+            async config => {
                 const handleConfig = {...config};
                 if (handleConfig.headers) {
                     // 数据转换
@@ -62,8 +62,8 @@ export default class CustomAxiosInstance {
                 return handleServiceResult(error, null);
             }
         );
-        (this.instance as any).interceptors.response.use(
-            async (response: any) => {
+        this.instance.interceptors.response.use(
+            async response => {
                 const {status} = response;
                 if (status === 200 || status < 300 || status === 304) {
                     const backend = response.data;
@@ -77,7 +77,7 @@ export default class CustomAxiosInstance {
                     if (REFRESH_TOKEN_CODE.includes(backend[codeKey])) {
                         const config = await refreshToken(response.config);
                         if (config) {
-                            return (this.instance as any).request(config);
+                            return this.instance.request(config);
                         }
                     }
 

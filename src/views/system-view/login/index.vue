@@ -1,49 +1,77 @@
 <template>
-    <div class="loginDiv">
-        <img alt="logo" class="logo" name="logo" src="http://s1.s100.vip:13127/Public/logo.png"/>
-        <p id="title">登录</p>
-        <n-form id="form" ref="formRef" :model="formValue" :rules="rules" :show-label="false">
-            <n-form-item label="用户名" path="username">
-                <n-input v-model:value="formValue.username" class="roundInput" placeholder="用户名"/>
-            </n-form-item>
-            <n-form-item label="密码" path="password">
-                <n-input
-                    v-model:value="formValue.password"
-                    class="roundInput"
-                    placeholder="密码"
-                    type="password"
-                    @keyup.enter="PostLogin"
-                />
-            </n-form-item>
-            <n-form-item>
-                <n-checkbox v-model:checked="needSave">记住我</n-checkbox>
-            </n-form-item>
-            <n-form-item>
-                <n-button attr-type="button" class="roundButton" type="primary" @click="PostLogin">进入OwiviOsa</n-button>
-            </n-form-item>
-        </n-form>
-        <div>
-            还没有账号？
-            <a id="registerLink" href="../active-account">点我注册</a>
+    <div class="flex justify-center items-center h-screen" :style="{ backgroundColor: bgColor }">
+        <dark-mode-switch
+            :dark="theme.darkMode"
+            class="absolute left-48px top-24px z-3 text-20px"
+            @update:dark="theme.setDarkMode"
+        />
+        <div class="relative s-card p-14 z-4">
+            <icon-ic:baseline-account-balance-wallet class="absolute z-4 w-13 h-13 text-primary top-5 left-5"/>
+            <div class="text-6xl font-bold italic text-primary mb-13 mt-5 text-center">
+                <span class="underline decoration-teal-500 decoration-6">Where</span> Money
+            </div>
+            <n-form id="form" ref="formRef" :model="formValue" :rules="rules" :show-label="false">
+                <n-form-item label="用户名" path="account">
+                    <n-input v-model:value="formValue.account" class="p-2" placeholder="账号" :round="true"/>
+                </n-form-item>
+                <n-form-item label="密码" path="password">
+                    <n-input
+                        v-model:value="formValue.password"
+                        class="p-2"
+                        placeholder="密码"
+                        type="password"
+                        @keyup.enter="PostLogin"
+                        :round="true"
+                    />
+                </n-form-item>
+                <n-form-item>
+                    <n-checkbox v-model:checked="needSave">记住我</n-checkbox>
+                </n-form-item>
+                <n-form-item>
+                    <n-button
+                        class="w-full py-5 text-lg font-bold"
+                        attr-type="button"
+                        :secondary="true"
+                        :round="true"
+                        type="primary"
+                        size="large"
+                        @click="PostLogin"
+                    >登录
+                    </n-button>
+                </n-form-item>
+            </n-form>
+            <div class="mt-2">
+                还没有账号？
+                <a id="loginLink" href="../active">点我注册</a>
+            </div>
         </div>
+        <login-bg :theme-color="bgThemeColor"/>
     </div>
 </template>
 
 <script lang="ts" setup>
-import {onMounted, ref, Ref} from 'vue';
+import {computed, onMounted, Ref, ref} from 'vue';
 import {Router} from 'vue-router';
-import qs from 'qs';
 import {useRouterPush} from '@/composables';
-import {storage} from '@/utils';
-import {loginAPI} from '@/apis/login';
+import {getColorPalette, mixColor, storage} from '@/utils';
+import {loginApi} from '@/apis/user';
+import {useThemeStore} from '@/store';
+import {LoginBg} from './components';
+import {DarkModeSwitch} from "@/components";
+import {UserLoginResponse} from "@/interface";
 
 const {routerPush} = useRouterPush();
-
-const formValue: Ref<{ username: string; password: string }> = ref({username: '', password: ''});
+const theme = useThemeStore();
+const bgThemeColor = computed(() => (theme.darkMode ? getColorPalette(theme.themeColor, 7) : theme.themeColor));
+const bgColor = computed(() => {
+    const COLOR_WHITE = '#ffffff';
+    const ratio = theme.darkMode ? 0.5 : 0.2;
+    return mixColor(COLOR_WHITE, theme.themeColor, ratio);
+});
+const formValue: Ref<{ account: string; password: string }> = ref({account: '', password: ''});
 declare const window: Window & { $message: any; $router: Router };
-// 输入验证
 const rules: object = {
-    username: {
+    account: {
         required: true,
         validator(_rule: any, value: string) {
             if (!value) {
@@ -62,14 +90,13 @@ const rules: object = {
         trigger: ['input', 'blur']
     }
 };
-// 获取浏览器中的cookie，如果有自动填入
 const GetCookie = (): void => {
     if (document.cookie.length > 0) {
         const cookie: string[] = document.cookie.split('; ');
         cookie.forEach(function (element): void {
             const result: string[] = element.split('=');
-            if (result[0] === 'username') {
-                formValue.value.username = result[1];
+            if (result[0] === 'account') {
+                formValue.value.account = result[1];
             } else if (result[0] === 'password') {
                 formValue.value.password = result[1];
             }
@@ -78,40 +105,29 @@ const GetCookie = (): void => {
 };
 onMounted(() => {
     storage.remove('token');
-    storage.remove('saveId');
     GetCookie();
 });
-/* 登录模块 */
-const formRef: Ref = ref(null); // 登录信息表格
-const needSave: Ref<boolean> = ref(true); // 是否记住账号密码
-const SetCookie = (username: string, password: string, exdays: number): void => {
+const formRef: Ref = ref(null);
+const needSave: Ref<boolean> = ref(true);
+const SetCookie = (account: string, password: string, exdays: number): void => {
     const exdate: Date = new Date();
     exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays);
-    window.document.cookie = `username` + `=${username};path=/;expires=${exdate.toUTCString()}`;
+    window.document.cookie = `account` + `=${account};path=/;expires=${exdate.toUTCString()}`;
     window.document.cookie = `password` + `=${password};path=/;expires=${exdate.toUTCString()}`;
 };
-// 登录按钮点击事件，验证并发送请求
 const PostLogin = (): void => {
     SetCookie('', '', -1);
     formRef.value.validate((errors: boolean) => {
         if (!errors) {
-            loginAPI(
-                qs.stringify({
-                    username: formValue.value.username,
-                    password: formValue.value.password
-                })
-            )
-                .then((response: { access_token: string }) => {
+            loginApi({account: formValue.value.account, password: formValue.value.password, role: '业务员'})
+                .then((response: UserLoginResponse) => {
                     window.$message.success('登录成功');
-                    const token: string = response.access_token;
+                    const token: string = response.token;
                     storage.set('token', token);
                     if (needSave.value) {
-                        SetCookie(formValue.value.username, formValue.value.password, 7);
+                        SetCookie(formValue.value.account, formValue.value.password, 7);
                     }
-                    // setTimeout(() => {
-                    // window.$router.push({ name: 'select-save' });
-                    routerPush({name: 'select-save'});
-                    // }, 1000);
+                    routerPush({name: 'home'});
                 })
                 .catch((_error: {}) => {
                 });
@@ -122,62 +138,12 @@ const PostLogin = (): void => {
 };
 defineExpose({formRef, formValue, rules, needSave, PostLogin});
 </script>
-
 <style scoped>
-body {
-    background-image: url('http://s1.s100.vip:13127/Public/background.png');
-}
-
-.loginDiv {
-    text-align: center;
-    width: 300px;
-    height: 520px;
-    margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.logo {
-    width: 100px;
-    margin: auto;
-}
-
-#title {
-    color: white;
-    font-size: 20px;
-}
-
-#form {
-    display: inline-block;
-    width: 300px;
-}
-
-.roundInput {
-    margin-top: 20px;
-    width: 300px;
-    padding: 5px;
-    border-radius: 20px;
-}
-
-.roundButton {
-    padding: 20px;
-    color: white;
-    width: 300px;
-    border-radius: 20px;
-}
-
 label {
     color: white;
 }
 
-#registerLink {
+#loginLink {
     color: #246ace;
-}
-
-.n-checkbox {
-    margin-left: 15px;
 }
 </style>
