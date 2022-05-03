@@ -1,22 +1,21 @@
 import {LoadingBarApi} from 'naive-ui';
 import axios from 'axios';
+import router from '@/router';
 import {storage} from '../utils';
-import {useRouterPush} from "@/composables";
+import qs from "qs";
 
-// 新建一个axios实例service
 const service = (axios as any).create({
     baseURL: import.meta.env.VITE_APP_INTERFACE_URL,
     timeout: 600 * 1000
 });
-
-// 请求拦截器
 service.interceptors.request.use(
     (config: any) => {
-        // 发送请求前做的一些处理,数据转化,配置请求头,设置token,设置loading等,根据需求去添加
-        // 设置token
         const token = storage.get('token');
         if (token) {
             config.headers.authorization = `Bearer ${token}`;
+        }
+        if (config.method === 'post') {
+            config.data = qs.stringify(config.data);
         }
         return config;
     },
@@ -25,41 +24,35 @@ service.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
 declare const window: Window & { $message: any; $loadingBar: LoadingBarApi };
-// 响应拦截器
 service.interceptors.response.use(
-    // 对响应数据做处理
     (response: any) => {
-        let res: any = response.data;
+        const res: any = response.data;
         if (res.code === 200) {
-            console.log(`请求${response.config.baseURL}${response.config.url} 成功，返回：`);
-            res = res.data;
-            console.log(res);
-            return Promise.resolve(res); // 只将数据返回
+            console.log(`请求${response.config.baseURL}${response.config.url}成功，返回：`);
+            console.log(res.data);
+            return Promise.resolve(res.data);
         } else {
-            if (res) {
+            if (res && res.code) {
                 // 1.公共错误处理
                 // 2.根据响应码具体处理
-                console.log(`请求${response.config.baseURL}${response.config.url} 失败，返回：`);
-                console.log(response);
+                console.log(`请求${response.config.baseURL}${response.config.url}失败，返回：`);
+                console.log(res);
                 switch (res.code) {
                     case 400:
-                        switch (res.message) {
-                            case '账户已激活':
-                                window.$message.error('激活失败，账户已激活。');
-                                break;
-                        }
+                        window.$message.error(res.message);
                         break;
                     case 401:
                         storage.remove('token');
                         switch (res.message) {
-                            case '账号或密码错误':
-                                window.$message.error('账号或密码错误');
+                            case '账户或密码错误':
+                                window.$message.error('账户或密码错误');
                                 break;
-                            case '登录过期':
-                                const {routerPush} = useRouterPush();
-                                routerPush({name: 'login'});
+                            case 'token无效':
+                            case 'token过期':
+                                window.$message.error('未授权或授权失效，请重新登录');
+                                router.push({name: 'login'}).then(_r => {
+                                });
                                 break;
                         }
                         break;
@@ -71,6 +64,9 @@ service.interceptors.response.use(
                     case 405:
                         break;
                     case 408:
+                        break;
+                    case 422:
+                        window.$message.error('请求参数错误');
                         break;
                     case 500:
                         window.$message.error('服务器错误');
@@ -90,20 +86,18 @@ service.interceptors.response.use(
                         console.log(`连接错误${res.code}`);
                 }
             } else {
-                if (JSON.stringify(res).includes('timeout')) {
-                    console.log('服务器响应超时，请刷新当前页');
-                }
+                window.$message.error('连接服务器失败');
             }
-            /* 异常处理结束 */
             window.$loadingBar.error();
             return Promise.reject(res);
         }
     },
     (error: any) => {
-        /* 异常处理开始 */
-        console.log(error);
+        if (JSON.stringify(error).includes('timeout')) {
+            window.$message.error('连接服务器失败');
+        }
+        window.$loadingBar.error();
         return Promise.reject(error);
     }
 );
-
 export default service;

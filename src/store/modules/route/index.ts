@@ -20,7 +20,7 @@ interface RouteState {
 export const useRouteStore = defineStore('route-store', {
     state: (): RouteState => ({
         isAddedDynamicRoute: false,
-        routeHomeName: 'dashboard',
+        routeHomeName: 'home',
         menus: [],
         menusList: [],
         rawRoutes: sidebarRoutes,

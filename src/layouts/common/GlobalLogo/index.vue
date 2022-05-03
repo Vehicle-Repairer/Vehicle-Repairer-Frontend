@@ -7,19 +7,20 @@
         >
             <span class="underline decoration-teal-500 decoration-4">T</span>
         </div>
+        <!-- {{ title }} -->
         <div
             v-show="showTitle"
             class="text-2xl font-bold italic text-primary transition duration-300 ease-in-out"
         >
-            <!-- {{ title }} -->
-            <span class="underline decoration-teal-500 decoration-4">TieB</span>reaker
+            <span class="underline decoration-teal-500 decoration-4">Where</span> Money
         </div>
     </router-link>
 </template>
 
 <script lang="ts" setup>
-import {routePath} from '@/router';
-import {useAppInfo} from '@/composables';
+import { SystemLogo } from '@/components';
+import { routePath } from '@/router';
+import { useAppInfo } from '@/composables';
 
 interface Props {
     /** 显示名字 */
@@ -28,7 +29,7 @@ interface Props {
 
 defineProps<Props>();
 
-const {title} = useAppInfo();
+const { title } = useAppInfo();
 const routeHomePath = routePath('root');
 </script>
 <style scoped></style>

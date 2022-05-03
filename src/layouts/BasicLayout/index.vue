@@ -30,17 +30,17 @@
 </template>
 
 <script lang="ts" setup>
+import {onMounted} from 'vue';
 import SoybeanAdminLayout from 'soybean-admin-layout';
 import {useAppStore, useThemeStore} from '@/store';
 import {useBasicLayout} from '@/composables';
 import {useStore} from '@/stores/store';
 import {GlobalContent, GlobalFooter, GlobalHeader, GlobalSider, GlobalTab, SettingDrawer} from '../common';
-
 const app = useAppStore();
 const theme = useThemeStore();
-
 const {mode, headerProps, siderVisible, siderWidth, siderCollapsedWidth} = useBasicLayout();
-
 const store = useStore();
+onMounted(() => {
+});
 </script>
 <style scoped></style>

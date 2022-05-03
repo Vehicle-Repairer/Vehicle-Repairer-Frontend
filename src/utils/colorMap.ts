@@ -1,30 +1,30 @@
 const percentColorsForProgress = [
     {
         pct: 0,
-        color: {r: 0xff, g: 0x00, b: 0}
+        color: { r: 0xff, g: 0x00, b: 0 }
     },
     {
         pct: 50,
-        color: {r: 0xff, g: 0xff, b: 0}
+        color: { r: 0xff, g: 0xff, b: 0 }
     },
     {
         pct: 100,
-        color: {r: 0x00, g: 0x80, b: 0}
+        color: { r: 0x00, g: 0x80, b: 0 }
     }
 ];
 
 const percentColorsForText = [
     {
         pct: 0,
-        color: {r: 0xff, g: 0x00, b: 0}
+        color: { r: 0xff, g: 0x00, b: 0 }
     },
     {
         pct: 50,
-        color: {r: 0xea, g: 0xcd, b: 0x76}
+        color: { r: 0xea, g: 0xcd, b: 0x76 }
     },
     {
         pct: 100,
-        color: {r: 0x05, g: 0x77, b: 0x48}
+        color: { r: 0x05, g: 0x77, b: 0x48 }
     }
 ];
 
@@ -60,3 +60,23 @@ export const getColor = function (pct: number, type: string = 'progress', begin:
     };
     return `rgb(${[color.r, color.g, color.b].join(',')})`;
 };
+
+const rgb2Hex = (rgb: Array<number>) => {
+    let r = rgb[0]
+    let g = rgb[1]
+    let b = rgb[2]
+    var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    return hex;
+}
+
+function getLightColor(oldRgb: Array<number>, level: number) {
+    let rgb = [...oldRgb]
+    for (var i = 0; i < 3; i++) rgb[i] = Math.floor((255 - rgb[i]) * level + rgb[i]);
+    return [rgb[0], rgb[1], rgb[2]];
+}
+
+function getDarkColor(oldRgb: Array<number>, level: number) {
+    let rgb = [...oldRgb]
+    for (var i = 0; i < 3; i++) rgb[i] = Math.floor(rgb[i] * (1 - level));
+    return [rgb[0], rgb[1], rgb[2]];
+}

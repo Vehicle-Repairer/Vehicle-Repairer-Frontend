@@ -1,9 +1,19 @@
 import http from '@/utils/http';
 
-const repairmanActiveAPI = (params: any) => {
-    return http.post('/user/repairman-active', params);
-};
-const salesmanActiveAPI = (params: any) => {
-    return http.post('/user/salesman-active', params);
-};
-export {repairmanActiveAPI, salesmanActiveAPI};
+function activeApi(params: any): any {
+    return http.post('/user/register', params);
+}
+
+function loginApi(params: any): any {
+    return http.post('/user/login', params);
+}
+
+function getProtocolApi(): any {
+    return http.get('/user/protocol', null);
+}
+
+function modifyInformation(params: any): any {
+    return http.post('/user/modify-information', params);
+}
+
+export {activeApi, loginApi,getProtocolApi, modifyInformation};

@@ -5,16 +5,20 @@ declare namespace AuthRoute {
 
     /** 路由的key */
     type RouteKey =
-    // 固定的路由
+        // 固定的路由
         | 'root' // 根路由
         | 'login'
-        | 'active-account'
+        | 'active'
+        | 'test'
         | 'not-found'
         | 'no-permission'
         | 'service-error'
         | 'not-found-page' // 捕获无效path的路由
+        // 自由路由
+        | 'home'
+        | 'asset'
+        // 样例路由
         | 'dashboard'
-        | 'workbench'
         | 'dashboard_analysis'
         | 'dashboard_workbench'
         | 'document'
