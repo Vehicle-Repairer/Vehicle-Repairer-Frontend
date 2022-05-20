@@ -9,6 +9,11 @@ declare namespace AuthRoute {
         | 'root' // 根路由
         | 'login'
         | 'active'
+        | 'repairForm'
+        | 'selectOrder'
+        | 'myWorkOrder'
+        | 'selectWorkOrder'
+        | 'myOrder'
         | 'test'
         | 'not-found'
         | 'no-permission'
