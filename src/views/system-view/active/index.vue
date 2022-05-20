@@ -152,7 +152,7 @@ declare const window: Window & { $message: any; $router: Router };
 function postActive(): void {
     formRef.value.validate((errors: boolean) => {
         if (!errors) {
-            activeApi({userName: formValue.value.userName, password: formValue.value.password})
+            activeApi({id: formValue.value.userName, password: formValue.value.password})
                 .then((_response: any) => {
                     window.$message.success('激活成功');
                     routerPush({name: 'login'});
