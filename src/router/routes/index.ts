@@ -11,7 +11,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name: 'test',
+        name:'test',
         path: '/test',
         component: 'self',
         meta: {
@@ -22,11 +22,11 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name: 'repairForm',
-        path: '/repairForm',
+        name:'registerCustomer',
+        path: '/registerCustomer',
         component: 'self',
         meta: {
-            title: '生成委托',
+            title: '登记客户',
             icon: 'entypo:add-to-list',
             requiresAuth: true,
             singleLayout: 'basic',
@@ -34,19 +34,31 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name: 'selectOrder',
-        path: '/selectOrder',
+        name:'registerCar',
+        path: '/registerCar',
         component: 'self',
         meta: {
-            title: '查询订单',
-            icon: 'material-symbols:content-paste-search',
+            title: '登记车辆',
+            icon: 'clarity:media-changer-outline-alerted',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '业务员'
         }
     },
     {
-        name: 'myWorkOrder',
+        name:'generateOrder',
+        path: '/generateOrder',
+        component: 'self',
+        meta: {
+            title: '维修委托',
+            icon: 'clarity:media-changer-outline-alerted',
+            requiresAuth: true,
+            singleLayout: 'basic',
+            role: '业务员'
+        }
+    },
+    {
+        name:'myWorkOrder',
         path: '/myWorkOrder',
         component: 'self',
         meta: {
@@ -58,7 +70,31 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name: 'selectWorkOrder',
+        name:'registerMaterial',
+        path: '/registerMaterial',
+        component: 'self',
+        meta: {
+            title: '登记材料',
+            icon: 'material-symbols:content-paste-search',
+            requiresAuth: true,
+            singleLayout: 'basic',
+            role: '维修员'
+        }
+    },
+    {
+        name:'selectOrder',
+        path: '/selectOrder',
+        component: 'self',
+        meta: {
+            title: '查询订单',
+            icon: 'material-symbols:content-paste-search',
+            requiresAuth: true,
+            singleLayout: 'basic',
+            role: '维修员'
+        }
+    },
+    {
+        name:'selectWorkOrder',
         path: '/selectWorkOrder',
         component: 'self',
         meta: {
@@ -70,7 +106,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name: 'myOrder',
+        name:'myOrder',
         path: '/myOrder',
         component: 'self',
         meta: {
@@ -78,7 +114,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             icon: 'ic:twotone-work-outline',
             requiresAuth: true,
             singleLayout: 'basic',
-            role: '业务员'
+            role: '维修员'
         }
     },
 ];

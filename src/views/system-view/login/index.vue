@@ -8,7 +8,7 @@
         <div class="relative s-card p-14 z-4">
             <icon-fluent:vehicle-car-collision-20-filled class="absolute z-4 w-13 h-13 text-primary top-5 left-5"/>
             <div class="text-6xl font-bold italic text-primary mb-13 mt-5 text-center">
-                <span class="underline decoration-teal-500 decoration-6">汽车维修系统</span>
+                <span class="underline decoration-teal-500 decoration-6">Where</span> Money
             </div>
             <n-tabs type="line" :animated="true" @update:value="refresh" :value="defaultRole" >
                 <n-tab-pane name="业务员" tab="业务员">
