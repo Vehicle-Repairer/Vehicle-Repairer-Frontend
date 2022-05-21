@@ -25,7 +25,6 @@ import type {GlobalMenuOption} from '@/interface';
 import {useStore} from "@/stores/store";
 
 const store = useStore();
-
 const route = useRoute();
 const app = useAppStore();
 const theme = useThemeStore();
@@ -52,24 +51,18 @@ watch(
     {immediate: true}
 );
 watch(
-    () => store.Date,
+    () => store.role,
     (_newValue, _oldValue) => {
-        console.log(_newValue);
-        console.log(routeStore.menus);
+        if (_newValue === '') {
+            return;
+        }
+        let temp = routeStore.menus.filter(item => item.role?.includes(_newValue) || item.role === undefined);
         for (let i: number = 0; i < routeStore.menus.length; i++) {
-            if (routeStore.menus[i].label === '转会大名单') {
-                console.log(routeStore.menus[i]);
+            if (routeStore.menus[i].role !== undefined && routeStore.menus[i].role !== _newValue) {
                 routeStore.menus[i]['disabled'] = true;
-                let month: number = parseInt(_newValue.split('-')[1]);
-                if (month === 1 || month === 6 || month === 7 || month === 8) {
-                    routeStore.menus[i]['disabled'] = false;
-                }
-                else {
-                    routeStore.menus[i]['disabled'] = true;
-                }
-                console.log(routeStore.menus[i]);
             }
         }
+        routeStore.menus = temp;
     },
     {immediate: true}
 );
