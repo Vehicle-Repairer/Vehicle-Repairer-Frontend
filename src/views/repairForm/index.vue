@@ -19,19 +19,19 @@
               </n-form-item>
             </div>
             <div>
-              <n-form-item label="联系人" path="inputlxr">
-                <n-input v-model:value="model.inputlxr" placeholder="" />
+              <n-form-item label="联系人" path="lxr">
+                <n-input v-model:value="model.lxr" placeholder="" />
               </n-form-item>
             </div>
             <div>
-              <n-form-item label="联系电话" path="inputlxdh">
-                <n-input v-model:value="model.inputlxdh" placeholder="" />
+              <n-form-item label="联系电话" path="phone">
+                <n-input v-model:value="model.phone" placeholder="" />
               </n-form-item>
             </div>
             <div>
-              <n-form-item label="客户名称" path="textareaValue">
+              <n-form-item label="客户名称" path="cusname">
                 <n-input
-                  v-model:value="model.textareaValue"
+                  v-model:value="model.cusname"
                   placeholder=""
                   type="textarea"
                   :autosize="{
@@ -42,20 +42,20 @@
               </n-form-item>
             </div>
             <div>
-              <n-form-item label="客户性质" path="selectValue">
-                <n-select v-model:value="model.selectValue" placeholder="可选择" :options="generalOptions" />
+              <n-form-item label="客户性质" path="custype">
+                <n-select v-model:value="model.custype" placeholder="可选择" :options="generalOptions" />
               </n-form-item>
             </div>
             <div>
-              <n-form-item label="折扣率" path="account">
-                <n-input v-model:value="model.account" placeholder="">
+              <n-form-item label="折扣率" path="discount">
+                <n-input v-model:value="model.discount" placeholder="">
                   <template #suffix>%</template>
                 </n-input>
               </n-form-item>
             </div>
             <div>
-              <n-form-item label="车牌号" path="multipleSelectValue">
-                <n-input v-model:value="model.multipleSelectValue" placeholder="" />
+              <n-form-item label="车牌号" path="liscencenum">
+                <n-input v-model:value="model.liscencenum" placeholder="" />
               </n-form-item>
             </div>
             <div>
@@ -74,8 +74,8 @@
               </n-form-item>
             </div>
             <div>
-              <n-form-item label="车辆类型" path="radioGroupValue">
-                <n-radio-group v-model:value="model.radioGroupValue" name="radiogroup1">
+              <n-form-item label="车辆类型" path="type">
+                <n-radio-group v-model:value="model.type" name="radiogroup1">
                   <n-space>
                     <n-radio value="微型车">微型车</n-radio>
                     <n-radio value="小型车">小型车</n-radio>
@@ -105,8 +105,8 @@
         >
           <div class="grid grid-cols-3 gap-4">
             <div>
-              <n-form-item label="车牌号" path="multipleSelectValue">
-                <n-input v-model:value="model.multipleSelectValue" placeholder="" />
+              <n-form-item label="车牌号" path="liscencenum">
+                <n-input v-model:value="model.liscencenum" placeholder="" />
               </n-form-item>
             </div>
             <div>
@@ -197,31 +197,27 @@ export default defineComponent({
     const message = useMessage();
     const model = ref({
       inputValue: null,
-      inputlxr: '',
-      inputlxdh: '',
-      account: 0,
+      lxr: '',
+      phone: '',
+      discount: 0,
       chexing: '',
       chejia: '',
-      textareaValue: '',
+      cusname: '',
       color: '',
-      selectValue: '',
-      multipleSelectValue: '',
-      datetimeValue: null,
+      custype: '',
+      liscencenum: '',
       switchValue: false,
-      checkboxGroupValue: null,
-      radioGroupValue: '',
-      radioButtonGroupValue: null,
-      inputNumberValue: null,
-      ywy: null,
-      ywynum: null,
-      km: null,
-      oil: null,
-      jctime: null,
+      type: '',
+      ywy: '',
+      ywynum: '',
+      km: '',
+      oil: '',
+      jctime: '',
       ts1: ref(null),
-      jiesuan: null,
-      err: null,
-      wxlx: null,
-      zyfenlei: null
+      jiesuan: '',
+      err: '',
+      wxlx: '',
+      zyfenlei: ''
     });
     return {
       formRef,
@@ -254,17 +250,17 @@ export default defineComponent({
           trigger: ['blur', 'input'],
           message: '请输入客户编号'
         },
-        inputlxr: {
+        lxr: {
           required: true,
           trigger: ['blur', 'input'],
           message: '请输入联系人'
         },
-        inputlxdh: {
+        phone: {
           required: true,
           trigger: ['blur', 'input'],
           message: '请输入联系电话'
         },
-        textareaValue: {
+        cusname: {
           required: true,
           trigger: ['blur', 'input'],
           message: '请输入客户名称'
@@ -279,7 +275,7 @@ export default defineComponent({
           trigger: ['blur', 'change'],
           message: '请填写折扣率'
         },
-        multipleSelectValue: {
+        liscencenum: {
           required: true,
           trigger: ['blur', 'change'],
           message: '请填写车牌号'
@@ -322,20 +318,20 @@ export default defineComponent({
             message.success('提交成功');
             console.log(model.value);
             addCustomer({
-              customerName: model.value.textareaValue,
-              customerType: model.value.selectValue,
-              discountRate: model.value.account,
-              contactPerson: model.value.inputlxr,
-              phone: model.value.inputlxdh
+              customerName: model.value.cusname,
+              customerType: model.value.custype,
+              discountRate: model.value.discount,
+              contactPerson: model.value.lxr,
+              phone: model.value.phone
             })
               .then((res: { customerId: number }) => {
                 addVehicle({
                   frameNumber: model.value.chejia,
-                  licenseNumber: model.value.multipleSelectValue,
+                  licenseNumber: model.value.liscencenum,
                   customerId: res.customerId,
                   color: model.value.color,
                   vehicleModel: model.value.chexing,
-                  vehicleType: model.value.radioGroupValue
+                  vehicleType: model.value.type
                 }).then((response:any)=>{
                   console.log(response);
                 });
