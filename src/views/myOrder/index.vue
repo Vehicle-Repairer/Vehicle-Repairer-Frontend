@@ -11,7 +11,7 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import { h, defineComponent } from 'vue'
 import { NTag, NButton, useMessage } from 'naive-ui'
 
