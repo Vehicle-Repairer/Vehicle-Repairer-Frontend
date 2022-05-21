@@ -12,7 +12,7 @@
             v-show="showTitle"
             class="text-2xl font-bold italic text-primary transition duration-300 ease-in-out"
         >
-            <span class="underline decoration-teal-500 decoration-4">Where</span> Money
+            <span class="underline decoration-teal-500 decoration-4">汽车维修系统</span>
         </div>
     </router-link>
 </template>
