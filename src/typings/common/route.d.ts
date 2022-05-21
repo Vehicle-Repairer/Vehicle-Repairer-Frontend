@@ -9,7 +9,9 @@ declare namespace AuthRoute {
         | 'root' // 根路由
         | 'login'
         | 'active'
-        | 'repairForm'
+        | 'registerCustomer'
+        | 'registerCar'
+        | 'generateOrder'
         | 'selectOrder'
         | 'myWorkOrder'
         | 'selectWorkOrder'

@@ -33,12 +33,34 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name:'repairForm',
-        path: '/repairForm',
+        name:'registerCustomer',
+        path: '/registerCustomer',
         component: 'self',
         meta: {
-            title: '生成委托',
+            title: '登记客户',
             icon: 'entypo:add-to-list',
+            requiresAuth: true,
+            singleLayout: 'basic'
+        }
+    },
+    {
+        name:'registerCar',
+        path: '/registerCar',
+        component: 'self',
+        meta: {
+            title: '登记车辆',
+            icon: 'clarity:media-changer-outline-alerted',
+            requiresAuth: true,
+            singleLayout: 'basic'
+        }
+    },
+    {
+        name:'generateOrder',
+        path: '/generateOrder',
+        component: 'self',
+        meta: {
+            title: '维修委托',
+            icon: 'clarity:media-changer-outline-alerted',
             requiresAuth: true,
             singleLayout: 'basic'
         }
