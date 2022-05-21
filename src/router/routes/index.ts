@@ -11,17 +11,6 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name: 'dashboard',
-        path: '/dashboard',
-        component: 'self',
-        meta: {
-            title: '仪表盘',
-            icon: 'mdi:clipboard-account',
-            requiresAuth: true,
-            singleLayout: 'basic'
-        }
-    },
-    {
         name:'test',
         path: '/test',
         component: 'self',
@@ -40,7 +29,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             title: '登记客户',
             icon: 'entypo:add-to-list',
             requiresAuth: true,
-            singleLayout: 'basic'
+            singleLayout: 'basic',
+            role: '业务员'
         }
     },
     {
@@ -51,7 +41,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             title: '登记车辆',
             icon: 'clarity:media-changer-outline-alerted',
             requiresAuth: true,
-            singleLayout: 'basic'
+            singleLayout: 'basic',
+            role: '业务员'
         }
     },
     {
@@ -62,7 +53,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             title: '维修委托',
             icon: 'clarity:media-changer-outline-alerted',
             requiresAuth: true,
-            singleLayout: 'basic'
+            singleLayout: 'basic',
+            role: '业务员'
         }
     },
     {
@@ -73,7 +65,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             title: '我的工单',
             icon: 'clarity:media-changer-outline-alerted',
             requiresAuth: true,
-            singleLayout: 'basic'
+            singleLayout: 'basic',
+            role: '维修员'
         }
     },
     {
@@ -84,7 +77,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             title: '登记材料',
             icon: 'material-symbols:content-paste-search',
             requiresAuth: true,
-            singleLayout: 'basic'
+            singleLayout: 'basic',
+            role: '维修员'
         }
     },
     {
@@ -95,7 +89,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             title: '查询订单',
             icon: 'material-symbols:content-paste-search',
             requiresAuth: true,
-            singleLayout: 'basic'
+            singleLayout: 'basic',
+            role: '维修员'
         }
     },
     {
@@ -106,7 +101,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             title: '查询工单',
             icon: 'material-symbols:content-paste-search',
             requiresAuth: true,
-            singleLayout: 'basic'
+            singleLayout: 'basic',
+            role: '维修员'
         }
     },
     {
@@ -117,7 +113,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             title: '我的订单',
             icon: 'ic:twotone-work-outline',
             requiresAuth: true,
-            singleLayout: 'basic'
+            singleLayout: 'basic',
+            role: '维修员'
         }
     },
 ];

@@ -5,7 +5,7 @@ declare namespace AuthRoute {
 
     /** 路由的key */
     type RouteKey =
-        // 固定的路由
+    // 固定的路由
         | 'root' // 根路由
         | 'login'
         | 'active'
@@ -26,9 +26,6 @@ declare namespace AuthRoute {
         | 'home'
         | 'asset'
         // 样例路由
-        | 'dashboard'
-        | 'dashboard_analysis'
-        | 'dashboard_workbench'
         | 'document'
         | 'document_vue'
         | 'document_vue-new'
@@ -39,16 +36,6 @@ declare namespace AuthRoute {
         | 'component_button'
         | 'component_card'
         | 'component_table'
-        | 'plugin'
-        | 'plugin_map'
-        | 'plugin_video'
-        | 'plugin_editor'
-        | 'plugin_editor_quill'
-        | 'plugin_editor_markdown'
-        | 'plugin_copy'
-        | 'plugin_icon'
-        | 'plugin_print'
-        | 'plugin_swiper'
         | 'exception'
         | 'exception_403'
         | 'exception_404'
@@ -100,6 +87,8 @@ declare namespace AuthRoute {
         order?: number;
         /** 表示是否是多级路由的中间级路由(用于转换路由数据时筛选多级路由的标识，定义路由时不用填写) */
         multi?: boolean;
+
+        role?: string;
     };
 
     /** 单个路由的类型结构(后端返回此类型结构的路由) */

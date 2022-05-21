@@ -14,7 +14,8 @@ export const useStore = defineStore('main', {
             gamePveData: Object as any,
             playerNameId: [] as any[], // 用于game-on
             clubNameId: [] as any[],
-            nextGame: { teams: [], distance: 0 } as any
+            nextGame: { teams: [], distance: 0 } as any,
+            role: '',
         };
     },
     getters: {
