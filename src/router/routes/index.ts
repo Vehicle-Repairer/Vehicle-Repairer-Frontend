@@ -31,7 +31,62 @@ export const sidebarRoutes: AuthRoute.Route[] = [
             requiresAuth: true,
             singleLayout: 'basic'
         }
-    }
+    },
+    {
+        name:'repairForm',
+        path: '/repairForm',
+        component: 'self',
+        meta: {
+            title: '生成委托',
+            icon: 'entypo:add-to-list',
+            requiresAuth: true,
+            singleLayout: 'basic'
+        }
+    },
+    {
+        name:'selectOrder',
+        path: '/selectOrder',
+        component: 'self',
+        meta: {
+            title: '查询订单',
+            icon: 'material-symbols:content-paste-search',
+            requiresAuth: true,
+            singleLayout: 'basic'
+        }
+    },
+    {
+        name:'myWorkOrder',
+        path: '/myWorkOrder',
+        component: 'self',
+        meta: {
+            title: '我的工单',
+            icon: 'clarity:media-changer-outline-alerted',
+            requiresAuth: true,
+            singleLayout: 'basic'
+        }
+    },
+    {
+        name:'selectWorkOrder',
+        path: '/selectWorkOrder',
+        component: 'self',
+        meta: {
+            title: '查询工单',
+            icon: 'material-symbols:content-paste-search',
+            requiresAuth: true,
+            singleLayout: 'basic'
+        }
+    },
+    {
+        name:'myOrder',
+        path: '/myOrder',
+        component: 'self',
+        meta: {
+            title: '我的订单',
+            icon: 'ic:twotone-work-outline',
+            requiresAuth: true,
+            singleLayout: 'basic'
+        }
+    },
 ];
 
 /** 固定的路由 */
