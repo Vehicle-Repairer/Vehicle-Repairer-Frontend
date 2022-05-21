@@ -7,10 +7,13 @@ function hideInMenu(route: AuthRoute.Route) {
 }
 
 /** 给菜单添加可选属性 */
-function addPartialProps(menuItem: GlobalMenuOption, icon?: string, children?: GlobalMenuOption[]) {
+function addPartialProps(menuItem: GlobalMenuOption, icon?: string, role?: string, children?: GlobalMenuOption[]) {
     const item = {...menuItem};
     if (icon) {
         Object.assign(item, {icon: iconifyRender(icon)});
+    }
+    if (role) {
+        Object.assign(item, {role});
     }
     if (children) {
         Object.assign(item, {children});
@@ -39,6 +42,7 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): GlobalMenuO
                 routePath: path
             },
             meta?.icon,
+            meta?.role,
             menuChildren
         );
 

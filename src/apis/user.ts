@@ -1,7 +1,7 @@
 import http from '@/utils/http';
 
 function activeApi(params: any): any {
-    return http.post('/user/register', params);
+    return http.post('/user/active', params);
 }
 
 function loginApi(params: any): any {

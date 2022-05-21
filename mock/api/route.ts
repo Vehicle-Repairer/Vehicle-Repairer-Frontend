@@ -202,7 +202,7 @@ const routes: AuthRoute.Route[] = [
 ];
 
 function dataMiddleware(data: AuthRoute.Route[]): ApiRoute.Route {
-    const routeHomeName: AuthRoute.RouteKey = 'dashboard_analysis';
+    const routeHomeName: AuthRoute.RouteKey = 'root';
 
     function sortRoutes(sorts: AuthRoute.Route[]) {
         return sorts.sort((next, pre) => Number(next.meta?.order) - Number(pre.meta?.order));

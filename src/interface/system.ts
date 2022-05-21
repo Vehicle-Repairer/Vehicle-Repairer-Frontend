@@ -10,6 +10,7 @@ export type GlobalMenuOption = {
     routeName: string;
     routePath: string;
     icon?: () => VNodeChild;
+    role?: string;
     children?: GlobalMenuOption[];
 };
 
