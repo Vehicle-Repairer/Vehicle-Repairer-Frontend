@@ -12,7 +12,6 @@
 <script lang="ts" setup>
 import {onMounted, onUnmounted, ref, watch} from 'vue';
 import Vditor from 'vditor';
-import 'vditor/src/assets/scss/index.scss';
 import {GithubLink} from '@/components';
 import {useThemeStore} from '@/store';
 
