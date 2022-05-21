@@ -8,7 +8,7 @@
         <div class="relative s-card p-14 z-4">
             <icon-ic:baseline-account-balance-wallet class="absolute z-4 w-13 h-13 text-primary top-5 left-5"/>
             <div class="text-6xl font-bold italic text-primary mb-13 mt-5 text-center">
-                <span class="underline decoration-teal-500 decoration-6">Where</span> Money
+                <span class="underline decoration-teal-500 decoration-6">汽车维修系统</span>
             </div>
             <n-form id="form" ref="formRef" :model="formValue" :rules="rules" :show-label="false">
                 <n-form-item label="用户名" path="id">
