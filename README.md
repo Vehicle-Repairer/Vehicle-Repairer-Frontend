@@ -1,5 +1,11 @@
 # Tie Breaker Frontend
 
+## 添加路由
+
+router/routes/index.ts
+
+typings/common/route.d.ts
+
 ## 安装
 
 安装项目依赖
