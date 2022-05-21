@@ -11,17 +11,6 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name: 'dashboard',
-        path: '/dashboard',
-        component: 'self',
-        meta: {
-            title: '仪表盘',
-            icon: 'mdi:clipboard-account',
-            requiresAuth: true,
-            singleLayout: 'basic'
-        }
-    },
-    {
         name:'test',
         path: '/test',
         component: 'self',
