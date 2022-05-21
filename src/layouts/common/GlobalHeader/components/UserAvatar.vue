@@ -9,13 +9,10 @@
 
 <script lang="ts" setup>
 import {HoverContainer} from '@/components';
-import {useAuthStore} from '@/store';
 import {iconifyRender} from '@/utils';
 import avatar from '@/assets/svg/common/avatar01.svg';
 
 type DropdownKey = 'user-center' | 'logout';
-
-const auth = useAuthStore();
 
 const options = [
     {
@@ -43,7 +40,6 @@ function handleDropdown(optionKey: string) {
             positiveText: '确定',
             negativeText: '取消',
             onPositiveClick: () => {
-                auth.resetAuthStore();
             }
         });
     }
