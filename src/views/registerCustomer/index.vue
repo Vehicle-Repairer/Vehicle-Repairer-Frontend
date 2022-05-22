@@ -75,13 +75,13 @@
               </div>
             </div>
             <div class="flex justify-center">
-              <n-button round type="primary" @click="handleValidateButtonClick">提交</n-button>
+              <n-button round type="primary" @click="handleButtonClick">提交</n-button>
             </div>
           </n-form>
         </div>
       </div>
 
-      <!-- 维修委托信息填写 -->
+      <!-- 客户信息 -->
       <div class="s-card flex flex-col p-5 space-y-2 w-3/5">
         <div class="text-lg font-semibold text-primary s-underline">{{ '客户信息检索' }}</div>
         <n-data-table
@@ -98,7 +98,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
-import { addCustomer, addVehicle } from '@/apis';
+import { addCustomer, getCustomerByParams } from '@/apis';
 import { mode } from 'crypto-js';
 
 const columns = [
@@ -240,7 +240,7 @@ export default defineComponent({
       sortDiscount () {
         dataTableInstRef.value.sort('discountRate', 'ascend')
       },
-      handleValidateButtonClick(e: MouseEvent) {
+      handleButtonClick(e: MouseEvent) {
         e.preventDefault();
         formRef.value?.validate(errors => {
           if (!errors) {
@@ -262,17 +262,25 @@ export default defineComponent({
           }
         });
       },
-      searchButtonClick (e: MouseEvent) {
-        e.preventDefault()
-        formRef.value?.validate((errors) => {
-          if (!errors) {
-            message.success('验证成功')
-          } else {
-            console.log(errors)
-            message.error('验证失败')
-          }
-        })
-      }
+      // searchButtonClick (e: MouseEvent) {
+      //   e.preventDefault();
+      //   formRef.value?.validate((errors) => {
+      //     if (!errors) {
+      //       message.success('验证成功');
+      //       getCustomerByParams({
+      //         customerName: model.value.customerName,
+      //         customerType: model.value.customerType,
+      //         phone: model.value.phone
+      //       })
+      //         .catch((error: any) => {
+      //           console.log(error);
+      //         });
+      //     } else {
+      //       console.log(errors)
+      //       message.error('验证失败')
+      //     }
+      //   })
+      // }
     };
   }
 });

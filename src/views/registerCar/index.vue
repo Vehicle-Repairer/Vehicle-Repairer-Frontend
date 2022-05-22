@@ -101,7 +101,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
-import { addCustomer, addVehicle } from '@/apis';
+import { addVehicle } from '@/apis';
 import { mode } from 'crypto-js';
 
 const columns = [
@@ -182,7 +182,7 @@ export default defineComponent({
       customerNameSearch: '',
       customerTypeSearch: '',
       phoneSearch: '',
-      customerId: '',
+      customerId: 0,
     });
     return {
       formRef,
@@ -259,12 +259,13 @@ export default defineComponent({
           if (!errors) {
             message.success('提交成功');
             console.log(model.value);
-            addCustomer({
-              customerName: model.value.customerName,
-              customerType: model.value.customerTypeFill,
-              discountRate: model.value.discountRate,
-              contactPerson: model.value.contactPerson,
-              phone: model.value.phone
+            addVehicle({
+              frameNumber: model.value.frameNumber,
+              licenseNumber: model.value.licenseNumber,
+              customerId: model.value.customerId,
+              color: model.value.color,
+              vehicleModel: model.value.vehicleModel,
+              vehicleType: model.value.vehicleType,
             })
               .catch((error: any) => {
                 console.log(error);
