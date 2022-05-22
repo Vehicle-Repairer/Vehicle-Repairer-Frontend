@@ -26,11 +26,6 @@
                 </n-form-item>
                 </div>
                 <div>
-                <n-form-item label="业务员" path="manName">
-                    <n-input v-model:value="model.manName" placeholder="" />
-                </n-form-item>
-                </div>
-                <div>
                 <n-form-item label="维修类型" path="repairType">
                     <n-select v-model:value="model.repairType" placeholder="可选择" :options="repairTypeOption" />
                 </n-form-item>
@@ -41,13 +36,8 @@
                 </n-form-item>
                 </div>
                 <div>
-                <n-form-item label="结算类型" path="jiesuan">
-                    <n-select v-model:value="model.jiesuan" placeholder="可选择" :options="jiesuanOption" />
-                </n-form-item>
-                </div>
-                <div>
-                <n-form-item label="进场日期" path="inFactoryTime">
-                    <n-date-picker v-model:value="timestamp1" type="date" clearable />
+                <n-form-item label="结算类型" path="payType">
+                    <n-select v-model:value="model.payType" placeholder="可选择" :options="payTypeOption" />
                 </n-form-item>
                 </div>
                 <div>
@@ -84,24 +74,18 @@
       <div class="flex flex-col gap-10 w-1/2">
         <div class="s-card flex flex-col p-5 space-x-2 space-y-2">
             <div class="text-lg font-semibold text-primary s-underline">{{ '填写维修派工单' }}</div>
-            <n-dynamic-input v-model:value="customValue" :on-create="onCreate">
-                <template #create-button-default>
-                随便搞点啥
-                </template>
+            <n-input v-model:value="model.attorneyId" placeholder="维修委托书编号"/>
+            <n-dynamic-input>
                 <template #default="{ value }">
                 <div style="display: flex; align-items: center; width: 100%">
-                    <n-checkbox
-                    v-model:checked="value.isCheck"
-                    style="margin-right: 12px"
-                    />
-                    <n-input-number
-                    v-model:value="value.num"
-                    style="margin-right: 12px; width: 160px"
-                    />
-                    <n-input v-model:value="value.string" type="text" />
+                    <n-select v-model:value="model.itemId" placeholder="可选择" :options="fuelAmountOption" />
+                    <n-select v-model:value="model.repairmanId" placeholder="可选择" :options="fuelAmountOption" />
                 </div>
                 </template>
             </n-dynamic-input>
+            <div class="flex justify-center">
+                <n-button round type="primary" @click="handleValidateButtonClick">提交</n-button>
+            </div>
         </div>
 
         <div class="s-card flex flex-col p-5 space-y-2 space-x-2">
@@ -152,7 +136,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
-import { addCustomer, addVehicle } from '@/apis';
+import { addCustomer, addAttorney } from '@/apis';
 import { mode } from 'crypto-js';
 
 const columns = [
@@ -226,6 +210,7 @@ export default defineComponent({
     const message = useMessage();
     const model = ref({
       licenseNumber: '',
+      attorneyId:'',
       frameNumber: '',
       repairAmount: '',
       range: 0,
@@ -233,33 +218,24 @@ export default defineComponent({
       customerNameSearch: '',
       customerTypeSearch: '',
       phoneSearch: '',
-      customerId: '',
+      customerId: 0,
       repairType:'',
-      manName:'',
       detailedFault:'',
-      inFactoryTime:'',
-      jiesuan:'',
+      payType:'',
+      isFinished: false,
     });
     return {
       formRef,
-      timestamp1: ref(Date.now()),
       model,
       data,
       columns,
       dataTableInst: dataTableInstRef,
       pagination: ref({ pageSize: 10 }),
-      customValue: ref([
-        {
-          isCheck: true,
-          num: 1,
-          string: '一个字符串'
-        }
-      ]),
       repairTypeOption: ['普通', '加急'].map(v => ({
         label: v,
         value: v
       })),
-      customerTypeOptions: ['单位', '个人'].map(v => ({
+        customerTypeOptions: ['单位', '个人'].map(v => ({
         label: v,
         value: v
       })),
@@ -267,11 +243,11 @@ export default defineComponent({
         label: v,
         value: v
       })),
-            jiesuanOption: ['自付', '三包','进保'].map(v => ({
+        payTypeOption: ['自付', '三包','进保'].map(v => ({
         label: v,
         value: v
       })),
-            fuelAmountOption: ['0', '1/4','1/2','3/4','1'].map(v => ({
+        fuelAmountOption: ['0', '1/4','1/2','3/4','1'].map(v => ({
         label: v,
         value: v
       })),
@@ -326,29 +302,12 @@ export default defineComponent({
           trigger: ['blur', 'change'],
           message: '请填写进厂油量'
         },
-        manName: {
-          required: true,
-          trigger: ['blur', 'change'],
-          message: '请填写业务员姓名'
-        },
         detailedFault : {
           required: true,
           trigger: ['blur', 'change'],
           message: '请填写故障描述'
         },
-        inFactoryTime: {
-          required: true,
-          trigger: ['blur', 'change'],
-          message: '请填写进厂时间'
-        },
 
-      },
-      onCreate () {
-        return {
-          isCheck: false,
-          num: 1,
-          string: '一个字符串'
-        }
       },
       sortId () {
         dataTableInstRef.value.sort('customerId', 'ascend')
@@ -360,15 +319,22 @@ export default defineComponent({
         e.preventDefault();
         formRef.value?.validate(errors => {
           if (!errors) {
-            message.success('提交成功');
             console.log(model.value);
-            addCustomer({
-              customerName: model.value.customerName,
-              customerType: model.value.customerTypeFill,
-              discountRate: model.value.discountRate,
-              contactPerson: model.value.contactPerson,
-              phone: model.value.phone
+            addAttorney({
+              customerId: model.value.customerId,
+              frameNumber: model.value.frameNumber,
+              licenseNumber: model.value.licenseNumber,
+              repairType: model.value.repairType,
+              repairAmount: model.value.repairAmount,
+              range: model.value.range,
+              fuelAmount: model.value.fuelAmount,
+              isFinished: model.value.isFinished,
+              detailedFault: model.value.detailedFault,
+              payType: model.value.payType,
             })
+            .then((response:any)=>{
+                  message.success('提交成功');
+                })
               .catch((error: any) => {
                 console.log(error);
               });
