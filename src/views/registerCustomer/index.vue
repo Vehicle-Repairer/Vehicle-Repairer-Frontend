@@ -17,13 +17,13 @@
                 <tbody>
                   <tr>
                     <td>
-                      <n-select v-model:value="model.customerTypeSearch" placeholder="可选择" :options="customerTypeOptions" />
+                      <n-select v-model:value="model.customerTypeSearch" clearable :options="customerTypeOptions" />
                     </td>
                     <td>
-                      <n-input v-model:value="model.customerNameSearch" placeholder=""/>
+                      <n-input v-model:value="model.customerNameSearch" clearable placeholder="请输入客户名称"/>
                     </td>
                     <td>
-                      <n-input v-model:value="model.phoneSearch" placeholder="" />
+                      <n-input v-model:value="model.phoneSearch" clearable placeholder="请输入手机号码" />
                     </td>
                   </tr>
                 </tbody>
@@ -48,27 +48,27 @@
             <div class="grid grid-cols-3 gap-4">
               <div>
                 <n-form-item label="联系人" path="contactPerson">
-                  <n-input v-model:value="model.contactPerson" placeholder="" />
+                  <n-input v-model:value="model.contactPerson" clearable placeholder="" />
                 </n-form-item>
               </div>
               <div>
                 <n-form-item label="联系电话" path="phone">
-                  <n-input v-model:value="model.phone" placeholder="" />
+                  <n-input v-model:value="model.phone" clearable placeholder="" />
                 </n-form-item>
               </div>
               <div>
                 <n-form-item label="客户名称" path="customerName">
-                  <n-input v-model:value="model.customerName" placeholder=""/>
+                  <n-input v-model:value="model.customerName" clearable placeholder=""/>
                 </n-form-item>
               </div>
               <div>
                 <n-form-item label="客户性质" path="customerType">
-                  <n-select v-model:value="model.customerType" placeholder="可选择" :options="customerTypeOptions" />
+                  <n-select v-model:value="model.customerType" clearable :options="customerTypeOptions" />
                 </n-form-item>
               </div>
               <div>
                 <n-form-item label="折扣率" path="discountRate">
-                  <n-input v-model:value="model.discountRate" placeholder="">
+                  <n-input v-model:value="model.discountRate" clearable placeholder="">
                     <template #suffix>%</template>
                   </n-input>
                 </n-form-item>
@@ -96,74 +96,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, Ref, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
 import { addCustomer, getCustomerByParams } from '@/apis';
-import { mode } from 'crypto-js';
 
-const columns = [
-  {
-    title: '客户编号',
-    key: 'customerId',
-    defaultSortOrder: false,
-    sorter: {
-      compare: (a:any, b:any) => a.customerId - b.customerId,
-      multiple: 3
-    }
-  },
-  {
-    title: '客户名称',
-    key: 'customerName',
-  },
-  {
-    title: '客户性质',
-    key: 'customerType',
-  },
-  {
-    title: '折扣率',
-    key: 'discountRate',
-    defaultSortOrder: false,
-    sorter: {
-      compare: (a:any , b:any) => a.discountRate - b.discountRate,
-      multiple: 2
-    }
-  },
-  {
-    title: '联系人',
-    key: 'contactPerson',
-  },
-  {
-    title: '联系电话',
-    key: 'phone',
-  }
-]
-
-const data = [
-  {
-    customerId: 1,
-    customerName: 'John Brown',
-    customerType: '个人',
-    discountRate: 90,
-    contactPerson: 'John Brown',
-    phone: '110'
-  },
-  {
-    customerId: 2,
-    customerName: '阿松大',
-    customerType: '个人',
-    discountRate: 80,
-    contactPerson: '阿松大',
-    phone: '110'
-  },
-  {
-    customerId: 3,
-    customerName: 'John吧',
-    customerType: '公司',
-    discountRate: 85,
-    contactPerson: 'John吧',
-    phone: '110'
-  },
-]
+const data:Ref<{
+  customerId: number;
+  customerName: string;
+  customerType: string;
+  discountRate: number;
+  contactPerson: string;
+  phone: string;
+}[]> = ref([]);
 
 export default defineComponent({
   setup() {
@@ -179,7 +123,6 @@ export default defineComponent({
       customerNameSearch: '',
       customerType: '',
       customerTypeSearch: '',
-
     });
     return {
       formRef,
@@ -203,27 +146,12 @@ export default defineComponent({
           trigger: ['blur', 'input'],
           message: '请输入联系电话'
         },
-        phoneSearch: {
-          required: true,
-          trigger: ['blur', 'input'],
-          message: '请输入联系电话'
-        },
         customerName: {
           required: true,
           trigger: ['blur', 'input'],
           message: '请输入客户名称'
         },
-        customerNameSearch: {
-          required: true,
-          trigger: ['blur', 'input'],
-          message: '请输入客户名称'
-        },
         customerType: {
-          required: true,
-          trigger: ['blur', 'change'],
-          message: '请选择客户性质'
-        },
-        customerTypeSearch: {
           required: true,
           trigger: ['blur', 'change'],
           message: '请选择客户性质'
@@ -262,28 +190,82 @@ export default defineComponent({
           }
         });
       },
-      // searchButtonClick (e: MouseEvent) {
-      //   e.preventDefault();
-      //   formRef.value?.validate((errors) => {
-      //     if (!errors) {
-      //       message.success('验证成功');
-      //       getCustomerByParams({
-      //         customerName: model.value.customerName,
-      //         customerType: model.value.customerType,
-      //         phone: model.value.phone
-      //       })
-      //         .catch((error: any) => {
-      //           console.log(error);
-      //         });
-      //     } else {
-      //       console.log(errors)
-      //       message.error('验证失败')
-      //     }
-      //   })
-      // }
+      searchButtonClick(a: MouseEvent) {
+        let tempcustomerNameSearch = model.value.customerNameSearch !== '' ? model.value.customerNameSearch : null;
+        let tempcustomerTypeSearch = model.value.customerTypeSearch !== '' ? model.value.customerTypeSearch : null;
+        let tempphoneSearch = model.value.phoneSearch !== '' ? model.value.phoneSearch : null;
+        getCustomerByParams({
+          name: tempcustomerNameSearch,
+          type: tempcustomerTypeSearch,
+          phone: tempphoneSearch
+        })
+          .then(
+            (res: {
+              customers: Array<{
+                customerId: number;
+                customerName: string;
+                customerType: string;
+                discountRate: number;
+                contactPerson: string;
+                phone: string;
+              }>;
+            }) => {
+              console.log(res);
+              data.value.length = 0;
+              console.log(data.value[0]);
+              for(let i =0; i < res.customers.length ; i++){
+                data.value[i]=res.customers[i];
+                console.log(data.value[i]);
+              }
+              message.success('查询成功');
+            }
+          )
+          .catch((error: any) => {
+            console.log(error);
+            message.error('查询失败');
+          });
+      }
     };
   }
 });
+
+const columns = [
+  {
+    title: '客户编号',
+    key: 'customerId',
+    defaultSortOrder: false,
+    sorter: {
+      compare: (a:any, b:any) => a.customerId - b.customerId,
+      multiple: 2
+    }
+  },
+  {
+    title: '客户名称',
+    key: 'customerName',
+  },
+  {
+    title: '客户性质',
+    key: 'customerType',
+  },
+  {
+    title: '折扣率',
+    key: 'discountRate',
+    defaultSortOrder: false,
+    sorter: {
+      compare: (a:any , b:any) => a.discountRate - b.discountRate,
+      multiple: 2
+    }
+  },
+  {
+    title: '联系人',
+    key: 'contactPerson',
+  },
+  {
+    title: '联系电话',
+    key: 'phone',
+  }
+]
+
 </script>
 <style scoped>
 </style>
