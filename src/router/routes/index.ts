@@ -58,6 +58,30 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
+        name:'repairAssign',
+        path: '/repairAssign',
+        component: 'self',
+        meta: {
+            title: '维修派工单',
+            icon: 'clarity:media-changer-outline-alerted',
+            requiresAuth: true,
+            singleLayout: 'basic',
+            role: '业务员'
+        }
+    },
+    {
+        name:'repairPrice',
+        path: '/repairPrice',
+        component: 'self',
+        meta: {
+            title: '维修总价',
+            icon: 'clarity:media-changer-outline-alerted',
+            requiresAuth: true,
+            singleLayout: 'basic',
+            role: '业务员'
+        }
+    },
+    {
         name:'myWorkOrder',
         path: '/myWorkOrder',
         component: 'self',
@@ -82,36 +106,12 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name:'selectOrder',
-        path: '/selectOrder',
-        component: 'self',
-        meta: {
-            title: '查询订单',
-            icon: 'material-symbols:content-paste-search',
-            requiresAuth: true,
-            singleLayout: 'basic',
-            role: '维修员'
-        }
-    },
-    {
         name:'selectWorkOrder',
         path: '/selectWorkOrder',
         component: 'self',
         meta: {
             title: '查询工单',
             icon: 'material-symbols:content-paste-search',
-            requiresAuth: true,
-            singleLayout: 'basic',
-            role: '维修员'
-        }
-    },
-    {
-        name:'myOrder',
-        path: '/myOrder',
-        component: 'self',
-        meta: {
-            title: '我的订单',
-            icon: 'ic:twotone-work-outline',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '维修员'
