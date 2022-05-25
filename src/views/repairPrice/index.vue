@@ -1,10 +1,57 @@
 <template>
   <div>
-    <div class="flex flex-row gap-10 w-full">
-      <div class="flex flex-col gap-10 w-5/7">
+    <div class="flex flex-col gap-10">
+      <div class="flex flex-row gap-10">
         <!-- 客户车辆填写 -->
-        <div class="s-card flex flex-col p-5 space-x-2 space-y-2">
+        <div class="s-card flex flex-col p-5 space-x-2 space-y-2 w-1/2 h-1/5">
           <div class="text-lg font-semibold text-primary s-underline">{{ '完成维修委托书' }}</div>
+          <div class="flex flex-row justify-between">
+            <n-form
+              ref="formRef"
+              :model="model"
+              :rules="rules"
+              label-placement="top"
+              label-width="auto"
+              require-mark-placement="right-hanging"
+            >
+              <div class="grid grid-cols-1 gap-4">
+                <div>
+                  <n-form-item label="维修委托编号" path="attorneyId">
+                    <n-input v-model:value="model.attorneyId" placeholder="" />
+                  </n-form-item>
+                </div>
+              </div>
+            </n-form>
+            <div>
+              <n-button round type="primary" @click="finishAttorneyButton">完成</n-button>
+            </div>
+          </div>
+          <div class="text-lg font-semibold text-primary s-underline">{{ '维修价格生成' }}</div>
+          <div class="flex flex-row justify-between">
+            <n-form
+              ref="formRef"
+              :model="model"
+              :rules="rules"
+              label-placement="top"
+              label-width="auto"
+              require-mark-placement="right-hanging"
+            >
+              <div class="grid grid-cols-3 gap-4">
+                <div>
+                  <n-form-item label="维修委托编号" path="attorneyIdPrice">
+                    <n-input v-model:value="model.attorneyIdPrice" placeholder="" />
+                  </n-form-item>
+                </div>
+              </div>
+            </n-form>
+            <div class="flex justify-center">
+              <n-button round type="primary" @click="consumptionSearchButtonClick">提交</n-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="s-card flex flex-col p-5 space-x-2 space-y-2 w-1/2 h-1/5">
+          <div class="text-lg font-semibold text-primary s-underline">{{ '维修价格明细' }}</div>
           <n-form
             ref="formRef"
             :model="model"
@@ -15,57 +62,40 @@
           >
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <n-form-item label="维修委托编号" path="attorneyId">
-                  <n-input v-model:value="model.attorneyId" placeholder="" />
+                <n-form-item label="维修员工费" path="repairmanPrice">
+                  <n-input v-model:value="model.repairmanPrice" :disabled="!active" placeholder="" />
+                </n-form-item>
+              </div>
+              <div>
+                <n-form-item label="零件价格" path="partsPrice">
+                  <n-input v-model:value="model.partsPrice" :disabled="!active" placeholder="" />
+                </n-form-item>
+              </div>
+              <div>
+                <n-form-item label="折扣率" path="discountRate">
+                  <n-input v-model:value="model.discountRate" :disabled="!active" placeholder="" />
+                </n-form-item>
+              </div>
+              <div>
+                <n-form-item label="总价" path="totalPrice">
+                  <n-input v-model:value="model.totalPrice" :disabled="!active" placeholder="" />
                 </n-form-item>
               </div>
             </div>
-            <div class="flex justify-center">
-              <n-button round type="primary" @click="finishAttorneyButton">完成</n-button>
-            </div>
           </n-form>
-        </div>
-
-        <div class="s-card flex flex-col p-5 space-y-2">
-          <div class="text-lg font-semibold text-primary s-underline">{{ '维修委托书检索' }}</div>
-          <div class="flex">
-            <n-button round type="primary" @click="attorneySearchButtonClick">查询</n-button>
-          </div>
-          <n-data-table ref="dataTableInstPart" :columns="columnsAttorney" :data="dataAttorney" :pagination="paginationAttorney" />
         </div>
       </div>
 
       <!-- 维修委托信息填写 -->
-      <div class="flex flex-col gap-10 w-2/7">
-        <div class="s-card flex flex-col p-5 space-x-2 space-y-2">
-          <div class="text-lg font-semibold text-primary s-underline">{{ '维修价格' }}</div>
-          <n-form
-            ref="formRef"
-            :model="model"
-            :rules="rules"
-            label-placement="top"
-            label-width="auto"
-            require-mark-placement="right-hanging"
-          >
-            <div class="grid grid-cols-3 gap-4">
-              <div>
-                <n-form-item label="工单编号" path="assignmentId">
-                  <n-input v-model:value="model.assignmentId" placeholder="" />
-                </n-form-item>
-              </div>
-            </div>
-            <div class="flex justify-center">
-              <n-button round type="primary" @click="partRegisterHandleButtonClick">提交</n-button>
-            </div>
-          </n-form>
-        </div>
-
-        <div class="s-card flex flex-col p-5 space-y-2">
-          <div class="text-lg font-semibold text-primary s-underline">{{ '工单零件信息检索' }}</div>
-          <div class="flex">
-            <n-button round type="primary" @click="consumptionSearchButtonClick">查询</n-button>
-          </div>
-          <n-data-table ref="dataTableInst" :columns="columnsConsumption" :data="dataConsumption" :pagination="pagination" />
+      <div class="flex gap-10">
+        <div class="s-card flex flex-col p-5 space-y-2 w-full">
+          <div class="text-lg font-semibold text-primary s-underline">{{ '维修委托书检索' }}</div>
+          <n-data-table
+            ref="dataTableInstPart"
+            :columns="columnsAttorney"
+            :data="dataAttorney"
+            :pagination="paginationAttorney"
+          />
         </div>
       </div>
     </div>
@@ -75,23 +105,51 @@
 <script lang="ts">
 import { defineComponent, Ref, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
-import { finishAttorney,  getAllAttorney , addPartConsumption } from '@/apis';
+import { finishAttorney, getAllAttorney, addPartConsumption, getPrice } from '@/apis';
+import { onMounted } from 'vue';
 
 const dataAttorney: Ref<
   {
-                attorneyId: number;
-                customerId: number;
-                licenseNumber: string;
-                repairType: string;
-                inFactoryTime: string;
-                finalPrice: number;
-                payType: string;
-                isFinishedString: string;
+    attorneyId: number;
+    customerId: number;
+    licenseNumber: string;
+    repairType: string;
+    inFactoryTime: string;
+    finalPrice: number;
+    payType: string;
+    isFinishedString: string;
   }[]
 > = ref([]);
 
 export default defineComponent({
   setup() {
+    onMounted(() => {
+      getAllAttorney({})
+        .then(
+          (res: {
+            attorneys: Array<{
+              attorneyId: number;
+              customerId: number;
+              licenseNumber: string;
+              repairType: string;
+              inFactoryTime: string;
+              finalPrice: number;
+              payType: string;
+              isFinishedString: string;
+            }>;
+          }) => {
+            console.log(res);
+            dataAttorney.value.length = 0;
+            for (let i = 0; i < res.attorneys.length; i++) {
+              dataAttorney.value[i] = res.attorneys[i];
+              console.log(dataAttorney.value[i]);
+            }
+          }
+        )
+        .catch((error: any) => {
+          console.log(error);
+        });
+    });
     const dataTableInstRef = ref(null);
     const dataTableInstRefPart = ref(null);
     const formRef = ref<FormInst | null>(null);
@@ -107,19 +165,22 @@ export default defineComponent({
       registerpartName: '',
       assignmentId: 0,
       attorneyId: 0,
+      attorneyIdPrice: 0,
       isFinished: true,
+      repairmanPrice: 0,
+      partsPrice: 0,
+      discountRate: 0,
+      totalPrice: 0
     });
     return {
       formRef,
       model,
       dataAttorney,
       columnsAttorney,
+      active: ref(false),
       dataTableInstPart: dataTableInstRefPart,
       paginationAttorney: ref({ pageSize: 8 }),
-      vehicleTypeOptions: ['小型车', '中型车', '大型车'].map(v => ({
-        label: v,
-        value: v
-      })),
+      paginationPrice: ref({ pageSize: 8 }),
       rules: {
         customerId: {
           required: true,
@@ -130,18 +191,13 @@ export default defineComponent({
           required: true,
           trigger: ['blur', 'input'],
           message: '请输入车架号'
-        },
-        partPrice: {
-          required: true,
-          trigger: ['blur', 'input'],
-          message: '请输入车牌号'
         }
       },
       sortId() {
-        dataTableInstRef.value.sort('customerId', 'ascend');
+        dataTableInstRef.value.sort('attorneyId', 'ascend');
       },
-      sortDiscount() {
-        dataTableInstRef.value.sort('discountRate', 'ascend');
+      sortType() {
+        dataTableInstRef.value.sort('repairType', 'ascend');
       },
       finishAttorneyButton(e: MouseEvent) {
         formRef.value?.validate(errors => {
@@ -150,7 +206,7 @@ export default defineComponent({
             console.log(model.value);
             finishAttorney({
               attorneyId: model.value.attorneyId,
-              isFinished: model.value.isFinished,
+              isFinished: model.value.isFinished
             }).catch((error: any) => {
               console.log(error);
             });
@@ -160,15 +216,14 @@ export default defineComponent({
           }
         });
       },
-      partRegisterHandleButtonClick(e: MouseEvent) {
+      attorneyHandleButtonClick(e: MouseEvent) {
         formRef.value?.validate(errors => {
           if (!errors) {
             message.success('提交成功');
             console.log(model.value);
-            addPartConsumption({
-              assignmentId: model.value.assignmentId,
-              partId: model.value.partId,
-              partAmount: model.value.partAmount,
+            finishAttorney({
+              attorneyId: model.value.attorneyId,
+              isFinished: model.value.isFinished
             }).catch((error: any) => {
               console.log(error);
             });
@@ -178,27 +233,23 @@ export default defineComponent({
           }
         });
       },
-      attorneySearchButtonClick(a: MouseEvent) {
-        getAllAttorney({})
+      consumptionSearchButtonClick(a: MouseEvent) {
+        getPrice({
+          attorneyId: model.value.attorneyIdPrice
+        })
           .then(
             (res: {
-              attorneys: Array<{
-                attorneyId: number;
-                customerId: number;
-                licenseNumber: string;
-                repairType: string;
-                inFactoryTime: string;
-                finalPrice: number;
-                payType: string;
-                isFinishedString: string;
-              }>;
+              价格明细: {
+                repairmanPrice: number;
+                partsPrice: number;
+                discountRate: number;
+                totalPrice: number;
+              };
             }) => {
-              console.log(res);
-              dataAttorney.value.length = 0;
-              for (let i = 0; i < res.attorneys.length; i++) {
-                dataAttorney.value[i] = res.attorneys[i];
-                console.log(dataAttorney.value[i]);
-              }
+              model.value.repairmanPrice = res.价格明细.repairmanPrice;
+              model.value.partsPrice = res.价格明细.partsPrice;
+              model.value.discountRate = res.价格明细.discountRate;
+              model.value.totalPrice = parseFloat(res.价格明细.totalPrice.toFixed(2));
             }
           )
           .catch((error: any) => {
@@ -213,9 +264,9 @@ const columnsAttorney = [
   {
     title: '维修委托编号',
     key: 'attorneyId',
-    defaultSortOrder: false,
+    defaultSortOrder: true,
     sorter: {
-      compare: (a: any, b: any) => a.customerId - b.customerId,
+      compare: (a: any, b: any) => a.attorneyId - b.attorneyId,
       multiple: 3
     }
   },
@@ -227,15 +278,20 @@ const columnsAttorney = [
     title: '车牌号',
     key: 'licenseNumber'
   },
-    {
+  {
     title: '维修类别',
-    key: 'repairType'
+    key: 'repairType',
+    defaultSortOrder: true,
+    sorter: {
+      compare: (a: any, b: any) => a.repairType - b.repairType,
+      multiple: 3
+    }
   },
   {
     title: '进厂时间',
     key: 'inFactoryTime'
   },
-    {
+  {
     title: '最终价格',
     key: 'finalPrice'
   },
@@ -243,16 +299,16 @@ const columnsAttorney = [
     title: '结算方式',
     key: 'payType'
   },
-    {
+  {
     title: '状态',
     key: 'isFinishedString'
-  },
+  }
 ];
 
-const columnsConsumption = [
+const columnsPrice = [
   {
-    title: '零件编号',
-    key: 'partId',
+    title: '维修员工费',
+    key: 'repairmanPrice',
     defaultSortOrder: false,
     sorter: {
       compare: (a: any, b: any) => a.customerId - b.customerId,
@@ -260,12 +316,16 @@ const columnsConsumption = [
     }
   },
   {
-    title: '零件名称',
-    key: 'partName'
+    title: '零件价格',
+    key: 'partsPrice'
   },
   {
-    title: '零件价格',
-    key: 'partPrice'
+    title: '折扣率',
+    key: 'discountRate'
+  },
+  {
+    title: '总价',
+    key: 'totalPrice'
   }
 ];
 </script>

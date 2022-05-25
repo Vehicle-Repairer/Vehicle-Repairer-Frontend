@@ -37,28 +37,16 @@
         </div>
 
         <div class="s-card flex flex-col p-5 space-y-2 space-x-2 h-4/5">
-          <div class="text-lg font-semibold text-primary s-underline">{{ '查询客户信息' }}</div>
+          <div class="text-lg font-semibold text-primary s-underline">{{ '查询客户委托书信息' }}</div>
           <div>
             <n-table :single-line="false">
               <thead>
                 <tr>
-                  <th>客户性质</th>
-                  <th>客户名称</th>
                   <th>联系电话</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>
-                    <n-select
-                      v-model:value="model.customerTypeSearch"
-                      placeholder="可选择"
-                      :options="customerTypeOptions"
-                    />
-                  </td>
-                  <td>
-                    <n-input v-model:value="model.customerNameSearch" clearable placeholder="" />
-                  </td>
                   <td>
                     <n-input v-model:value="model.phoneSearch" clearable placeholder="" />
                   </td>
@@ -111,13 +99,7 @@
         </div>
 
         <div class="s-card flex flex-col p-5 space-x-2 space-y-2">
-          <div class="text-lg font-semibold text-primary s-underline">{{ '查询维修员信息' }}</div>
-          <div class="flex flex-row justify-center">
-            <div>
-              <n-button round type="primary" @click="repairmanSearchButtonClick">查询</n-button>
-            </div>
-          </div>
-          <div class="flex justify-center"></div>
+          <div class="text-lg font-semibold text-primary s-underline">{{ '维修员信息' }}</div>
           <n-data-table
             ref="dataTableInstRepair"
             :columns="columnsRepair"
@@ -134,6 +116,7 @@
 import { defineComponent, Ref, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
 import { getCustomerByParams, getAttorneyByCustomerId, getRepairItems, getAllRepairman, addAssignment } from '@/apis';
+import { onMounted } from 'vue';
 
 const data: Ref<
   {
@@ -165,6 +148,58 @@ const dataItem: Ref<
 
 export default defineComponent({
   setup() {
+    onMounted(() => {
+      let tempitemName = model.value.itemName !== '' ? model.value.itemName : null;
+      let tempprofession = model.value.profession !== '' ? model.value.profession : null;
+      getRepairItems({
+        itemName: tempitemName,
+        profession: tempprofession
+      })
+        .then(
+          (res: {
+            维修项目信息: Array<{
+              itemId: number;
+              itemName: string;
+              needTime: string;
+              profession: string;
+            }>;
+          }) => {
+            console.log(res);
+            dataItem.value.length = 0;
+            for (let i = 0; i < res.维修项目信息.length; i++) {
+              dataItem.value[i] = res.维修项目信息[i];
+              console.log(dataItem.value[i]);
+            }
+          }
+        )
+        .catch((error: any) => {
+          console.log(error);
+        });
+      getAllRepairman({})
+        .then(
+          (res: {
+            维修员信息: Array<{
+              id: number;
+              manName: string | null;
+              phone: string | null;
+              emailAddress: string | null;
+              profession: string;
+              hourCost: number | null;
+            }>;
+          }) => {
+            console.log(res);
+            dataRepair.value.length = 0;
+            console.log(dataRepair.value[0]);
+            for (let i = 0; i < res.维修员信息.length; i++) {
+              dataRepair.value[i] = res.维修员信息[i];
+              console.log(dataRepair.value[i]);
+            }
+          }
+        )
+        .catch((error: any) => {
+          console.log(error);
+        });
+    });
     const dataTableInstRef = ref(null);
     const dataTableInstRefItem = ref(null);
     const dataTableInstRefRepair = ref(null);
@@ -296,8 +331,6 @@ export default defineComponent({
                     finished: boolean;
                   }>;
                 }) => {
-                  console.log(response);
-                  console.log(response);
                   console.log(response);
                   data.value.length = 0;
                   console.log(data.value[0]);

@@ -6,27 +6,27 @@
         <div class="s-card flex flex-col p-5 space-x-2 space-y-2">
           <div class="text-lg font-semibold text-primary s-underline">{{ '查询客户信息' }}</div>
           <div>
-              <n-table :single-line="false">
-                <thead>
-                  <tr>
-                    <th>客户性质</th>
-                    <th>客户名称</th>
-                    <th>联系电话</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <n-select v-model:value="model.customerTypeSearch" clearable :options="customerTypeOptions" />
-                    </td>
-                    <td>
-                      <n-input v-model:value="model.customerNameSearch" clearable placeholder="请输入客户名称"/>
-                    </td>
-                    <td>
-                      <n-input v-model:value="model.phoneSearch" clearable placeholder="请输入手机号码" />
-                    </td>
-                  </tr>
-                </tbody>
+            <n-table :single-line="false">
+              <thead>
+                <tr>
+                  <th>客户性质</th>
+                  <th>客户名称</th>
+                  <th>联系电话</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <n-select v-model:value="model.customerTypeSearch" clearable :options="customerTypeOptions" />
+                  </td>
+                  <td>
+                    <n-input v-model:value="model.customerNameSearch" clearable placeholder="请输入客户名称" />
+                  </td>
+                  <td>
+                    <n-input v-model:value="model.phoneSearch" clearable placeholder="请输入手机号码" />
+                  </td>
+                </tr>
+              </tbody>
             </n-table>
           </div>
           <div class="flex justify-center">
@@ -46,36 +46,36 @@
             require-mark-placement="right-hanging"
           >
             <div class="grid grid-cols-3 gap-4">
-                <div>
-                    <n-form-item label="客户编号" path="customerId">
-                    <n-input v-model:value="model.customerId" clearable placeholder="" />
-                    </n-form-item>
-                </div>
-                <div>
+              <div>
+                <n-form-item label="客户编号" path="customerId">
+                  <n-input v-model:value="model.customerId" clearable placeholder="" />
+                </n-form-item>
+              </div>
+              <div>
                 <n-form-item label="车牌号" path="licenseNumber">
-                    <n-input v-model:value="model.licenseNumber" clearable placeholder="" />
+                  <n-input v-model:value="model.licenseNumber" clearable placeholder="" />
                 </n-form-item>
-                </div>
-                <div>
+              </div>
+              <div>
                 <n-form-item label="车架号" path="frameNumber">
-                    <n-input v-model:value="model.frameNumber" clearable placeholder="" />
+                  <n-input v-model:value="model.frameNumber" clearable placeholder="" />
                 </n-form-item>
-                </div>
-                <div>
+              </div>
+              <div>
                 <n-form-item label="车型" path="vehicleModel">
-                    <n-input v-model:value="model.vehicleModel" clearable placeholder="" />
+                  <n-input v-model:value="model.vehicleModel" clearable placeholder="" />
                 </n-form-item>
-                </div>
-                <div>
+              </div>
+              <div>
                 <n-form-item label="颜色" path="color">
-                    <n-input v-model:value="model.color" clearable placeholder="" />
+                  <n-input v-model:value="model.color" clearable placeholder="" />
                 </n-form-item>
-                </div>
-                <div>
+              </div>
+              <div>
                 <n-form-item label="车辆类别" path="vehicleType">
-                    <n-select v-model:value="model.vehicleType" clearable :options="vehicleTypeOptions" />
+                  <n-select v-model:value="model.vehicleType" clearable :options="vehicleTypeOptions" />
                 </n-form-item>
-                </div>
+              </div>
             </div>
             <div class="flex justify-center">
               <n-button round type="primary" @click="handleValidateButtonClick">提交</n-button>
@@ -87,12 +87,7 @@
       <!-- 维修委托信息填写 -->
       <div class="s-card flex flex-col p-5 space-y-2 w-3/5">
         <div class="text-lg font-semibold text-primary s-underline">{{ '客户信息检索' }}</div>
-        <n-data-table
-          ref="dataTableInst"
-          :columns="columns"
-          :data="data"
-          :pagination="pagination"
-        />
+        <n-data-table ref="dataTableInst" :columns="columns" :data="data" :pagination="pagination" />
       </div>
     </div>
   </div>
@@ -102,18 +97,55 @@
 import { defineComponent, Ref, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
 import { addVehicle, getCustomerByParams } from '@/apis';
+import { onMounted } from 'vue';
 
-const data:Ref<{
-  customerId: number;
-  customerName: string;
-  customerType: string;
-  discountRate: number;
-  contactPerson: string;
-  phone: string;
-}[]> = ref([]);
+const data: Ref<
+  {
+    customerId: number;
+    customerName: string;
+    customerType: string;
+    discountRate: number;
+    contactPerson: string;
+    phone: string;
+  }[]
+> = ref([]);
 
 export default defineComponent({
   setup() {
+    onMounted(() => {
+      let tempcustomerNameSearch = model.value.customerNameSearch !== '' ? model.value.customerNameSearch : null;
+      let tempcustomerTypeSearch = model.value.customerTypeSearch !== '' ? model.value.customerTypeSearch : null;
+      let tempphoneSearch = model.value.phoneSearch !== '' ? model.value.phoneSearch : null;
+      getCustomerByParams({
+        name: tempcustomerNameSearch,
+        type: tempcustomerTypeSearch,
+        phone: tempphoneSearch
+      })
+        .then(
+          (res: {
+            customers: Array<{
+              customerId: number;
+              customerName: string;
+              customerType: string;
+              discountRate: number;
+              contactPerson: string;
+              phone: string;
+            }>;
+          }) => {
+            console.log(res);
+            data.value.length = 0;
+            console.log(data.value[0]);
+            for (let i = 0; i < res.customers.length; i++) {
+              data.value[i] = res.customers[i];
+              console.log(data.value[i]);
+            }
+          }
+        )
+        .catch((error: any) => {
+          console.log(error);
+          message.error('查询失败');
+        });
+    });
     const dataTableInstRef = ref(null);
     const formRef = ref<FormInst | null>(null);
     const message = useMessage();
@@ -126,7 +158,7 @@ export default defineComponent({
       vehicleType: '',
       customerNameSearch: '',
       customerTypeSearch: '',
-      phoneSearch: '',
+      phoneSearch: ''
     });
     return {
       formRef,
@@ -134,8 +166,8 @@ export default defineComponent({
       data,
       columns,
       dataTableInst: dataTableInstRef,
-      pagination: ref({ pageSize: 10 }),
-      vehicleTypeOptions: ['小型车', '中型车','大型车'].map(v => ({
+      pagination: ref({ pageSize: 8 }),
+      vehicleTypeOptions: ['小型车', '中型车', '大型车'].map(v => ({
         label: v,
         value: v
       })),
@@ -173,14 +205,13 @@ export default defineComponent({
           required: true,
           trigger: ['blur', 'change'],
           message: '请填写车辆类别'
-        },
-
+        }
       },
-      sortId () {
-        dataTableInstRef.value.sort('customerId', 'ascend')
+      sortId() {
+        dataTableInstRef.value.sort('customerId', 'ascend');
       },
-      sortDiscount () {
-        dataTableInstRef.value.sort('discountRate', 'ascend')
+      sortDiscount() {
+        dataTableInstRef.value.sort('discountRate', 'ascend');
       },
       handleValidateButtonClick(e: MouseEvent) {
         e.preventDefault();
@@ -194,11 +225,10 @@ export default defineComponent({
               customerId: model.value.customerId,
               color: model.value.color,
               vehicleModel: model.value.vehicleModel,
-              vehicleType: model.value.vehicleType,
-            })
-              .catch((error: any) => {
-                console.log(error);
-              });
+              vehicleType: model.value.vehicleType
+            }).catch((error: any) => {
+              console.log(error);
+            });
           } else {
             console.log(errors);
             message.error('提交失败');
@@ -228,8 +258,8 @@ export default defineComponent({
               console.log(res);
               data.value.length = 0;
               console.log(data.value[0]);
-              for(let i =0; i < res.customers.length ; i++){
-                data.value[i]=res.customers[i];
+              for (let i = 0; i < res.customers.length; i++) {
+                data.value[i] = res.customers[i];
                 console.log(data.value[i]);
               }
               message.success('查询成功');
@@ -250,37 +280,36 @@ const columns = [
     key: 'customerId',
     defaultSortOrder: false,
     sorter: {
-      compare: (a:any, b:any) => a.customerId - b.customerId,
+      compare: (a: any, b: any) => a.customerId - b.customerId,
       multiple: 2
     }
   },
   {
     title: '客户名称',
-    key: 'customerName',
+    key: 'customerName'
   },
   {
     title: '客户性质',
-    key: 'customerType',
+    key: 'customerType'
   },
   {
     title: '折扣率',
     key: 'discountRate',
     defaultSortOrder: false,
     sorter: {
-      compare: (a:any , b:any) => a.discountRate - b.discountRate,
+      compare: (a: any, b: any) => a.discountRate - b.discountRate,
       multiple: 2
     }
   },
   {
     title: '联系人',
-    key: 'contactPerson',
+    key: 'contactPerson'
   },
   {
     title: '联系电话',
-    key: 'phone',
+    key: 'phone'
   }
-]
-
+];
 </script>
 <style scoped>
 </style>

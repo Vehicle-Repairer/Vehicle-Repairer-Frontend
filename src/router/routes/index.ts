@@ -22,6 +22,18 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
+        name:'personalInfo1',
+        path: '/personalInfo1',
+        component: 'self',
+        meta: {
+            title: '个人信息',
+            icon: 'entypo:add-to-list',
+            requiresAuth: true,
+            singleLayout: 'basic',
+            role: '业务员'
+        }
+    },
+    {
         name:'registerCustomer',
         path: '/registerCustomer',
         component: 'self',
@@ -82,6 +94,18 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
+        name:'personalInfo2',
+        path: '/personalInfo2',
+        component: 'self',
+        meta: {
+            title: '个人信息',
+            icon: 'entypo:add-to-list',
+            requiresAuth: true,
+            singleLayout: 'basic',
+            role: '维修员'
+        }
+    },
+    {
         name:'myWorkOrder',
         path: '/myWorkOrder',
         component: 'self',
@@ -99,18 +123,6 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '登记材料',
-            icon: 'material-symbols:content-paste-search',
-            requiresAuth: true,
-            singleLayout: 'basic',
-            role: '维修员'
-        }
-    },
-    {
-        name:'selectWorkOrder',
-        path: '/selectWorkOrder',
-        component: 'self',
-        meta: {
-            title: '查询工单',
             icon: 'material-symbols:content-paste-search',
             requiresAuth: true,
             singleLayout: 'basic',
