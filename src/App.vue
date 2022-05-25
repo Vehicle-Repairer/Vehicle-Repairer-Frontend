@@ -1,5 +1,5 @@
 <template>
-    <div class="dark:text-gray-300">
+    <div class="dark:text-gray-300" style="height: 100%">
         <n-config-provider
             :date-locale="dateZhCN"
             :locale="zhCN"
@@ -8,19 +8,21 @@
             class="h-full"
         >
             <naive-provider>
-                <router-view />
+                <router-view/>
             </naive-provider>
         </n-config-provider>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { dateZhCN, zhCN } from 'naive-ui';
-import { NaiveProvider } from '@/components';
-import { subscribeStore, useThemeStore } from '@/store';
+import {dateZhCN, zhCN} from 'naive-ui';
+import {NaiveProvider} from '@/components';
+import {subscribeStore, useThemeStore} from '@/store';
 
 const theme = useThemeStore();
 
 subscribeStore();
 </script>
 
+<style>
+</style>
