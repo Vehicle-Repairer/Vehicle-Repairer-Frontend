@@ -5,7 +5,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '主页',
-            icon: 'mdi:clipboard-account',
+            icon: 'material-symbols:home',
             requiresAuth: true,
             singleLayout: 'basic'
         }
@@ -15,8 +15,8 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         path: '/test',
         component: 'self',
         meta: {
-            title: '测试',
-            icon: 'ion:logo-alipay',
+            title: '休息一下看星星吧',
+            icon: 'ph:star-bold',
             requiresAuth: true,
             singleLayout: 'basic'
         }
@@ -27,7 +27,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '个人信息',
-            icon: 'entypo:add-to-list',
+            icon: 'material-symbols:manage-accounts-outline-rounded',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '业务员'
@@ -39,7 +39,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '登记客户',
-            icon: 'entypo:add-to-list',
+            icon: 'ph:trademark-registered',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '业务员'
@@ -51,7 +51,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '登记车辆',
-            icon: 'clarity:media-changer-outline-alerted',
+            icon: 'ph:trademark-registered',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '业务员'
@@ -63,7 +63,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '维修委托',
-            icon: 'clarity:media-changer-outline-alerted',
+            icon: 'material-symbols:featured-play-list-outline',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '业务员'
@@ -75,7 +75,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '维修派工单',
-            icon: 'clarity:media-changer-outline-alerted',
+            icon: 'material-symbols:featured-play-list-outline',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '业务员'
@@ -87,7 +87,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '维修总价',
-            icon: 'clarity:media-changer-outline-alerted',
+            icon: 'icon-park-outline:paper-money',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '业务员'
@@ -99,7 +99,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '个人信息',
-            icon: 'entypo:add-to-list',
+            icon: 'material-symbols:manage-accounts-outline-rounded',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '维修员'
@@ -111,7 +111,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '我的工单',
-            icon: 'clarity:media-changer-outline-alerted',
+            icon: 'material-symbols:featured-play-list-outline',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '维修员'
@@ -123,7 +123,7 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         component: 'self',
         meta: {
             title: '登记材料',
-            icon: 'material-symbols:content-paste-search',
+            icon: 'ph:trademark-registered',
             requiresAuth: true,
             singleLayout: 'basic',
             role: '维修员'
