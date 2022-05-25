@@ -61,10 +61,10 @@ function finishAttorney(params: {
     return http.post('/attorney/finish', params);
 }
 
-function addPrice(params: {
+function getPrice(params: {
     attorneyId: number,
 }): any {
-    return http.post('/attorney/total-price', params);
+    return http.get('/attorney/total-price', params);
 }
 
 function getCustomerById(params: { customerId: number }): any {
@@ -107,4 +107,4 @@ function getAllAttorney(params: {}): any {
     return http.get('/attorney/salesman', params);
 }
 
-export {getAllAttorney, getAllParts, getAssignment, getMyInfo, addCustomer, addVehicle, getCustomerById, getVehicleByCustomerId, getCustomerByParams, addPrice, finishAttorney, modifyInfo, finishAssignment, addPartConsumption, addPart, addAttorney, getAttorneyByCustomerId, getRepairItems, getAllRepairman, addAssignment, addRepairItem };
+export {getAllAttorney, getAllParts, getAssignment, getMyInfo, addCustomer, addVehicle, getCustomerById, getVehicleByCustomerId, getCustomerByParams, getPrice, finishAttorney, modifyInfo, finishAssignment, addPartConsumption, addPart, addAttorney, getAttorneyByCustomerId, getRepairItems, getAllRepairman, addAssignment, addRepairItem };

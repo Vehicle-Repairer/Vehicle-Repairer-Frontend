@@ -33,9 +33,6 @@
 
         <div class="s-card flex flex-col p-5 space-y-2">
           <div class="text-lg font-semibold text-primary s-underline">{{ '零件信息检索' }}</div>
-          <div class="flex">
-            <n-button round type="primary" @click="itemSearchButtonClick">查询</n-button>
-          </div>
           <n-data-table ref="dataTableInstPart" :columns="columnsPart" :data="dataPart" :pagination="pagination" />
         </div>
       </div>
@@ -77,9 +74,6 @@
 
         <div class="s-card flex flex-col p-5 space-y-2">
           <div class="text-lg font-semibold text-primary s-underline">{{ '工单信息检索' }}</div>
-          <div class="flex">
-            <n-button round type="primary" @click="assignmentnSearchButtonClick">查询</n-button>
-          </div>
           <n-data-table ref="dataTableInst" :columns="columnsAssignment" :data="dataAssignment" :pagination="paginationAssignment" />
         </div>
       </div>
@@ -91,7 +85,7 @@
 import { defineComponent, Ref, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
 import { getAllParts, addPart , addPartConsumption, getAssignment ,getMyInfo } from '@/apis';
-import { mode } from 'crypto-js';
+import { onMounted } from 'vue';
 
 const dataPart: Ref<
   {
@@ -115,6 +109,64 @@ const dataAssignment: Ref<
 
 export default defineComponent({
   setup() {
+    onMounted(() => {
+              getAllParts({})
+          .then(
+            (res: {
+              零件信息: Array<{
+                partId: number;
+                partName: string;
+                partPrice: number;
+              }>;
+            }) => {
+              console.log(res);
+              dataPart.value.length = 0;
+              for (let i = 0; i < res.零件信息.length; i++) {
+                dataPart.value[i] = res.零件信息[i];
+                console.log(dataPart.value[i]);
+              }
+            }
+          )
+          .catch((error: any) => {
+            console.log(error);
+          });
+                  getMyInfo({})
+          .then(
+            (res: {
+              me: {
+                id: string;
+              };
+            }) => {
+              getAssignment({
+                repairmanId: res.me.id,
+                isFinished: false,
+              }).then(
+                (response: {
+                  assignments: Array<{
+                    assignmentId: number;
+                    frameNumber: string;
+                    repairItem: string;
+                    repairType: string;
+                    repairTime: string;
+                    detailedFault: string;
+                    isFinished: string;
+                  }>;
+                }) => {
+                  console.log(response);
+                  dataAssignment.value.length = 0;
+                  console.log(dataAssignment.value[0]);
+                  for (let i = 0; i < response.assignments.length; i++) {
+                    dataAssignment.value[i] = response.assignments[i];
+                    console.log(dataAssignment.value[i]);
+                  }
+                }
+              );
+            }
+          )
+          .catch((error: any) => {
+            console.log(error);
+          });
+});
     const dataTableInstRef = ref(null);
     const dataTableInstRefPart = ref(null);
     const formRef = ref<FormInst | null>(null);

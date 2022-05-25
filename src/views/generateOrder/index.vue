@@ -104,15 +104,15 @@
                   <td>
                     <n-select
                       v-model:value="model.customerTypeSearch"
-                      placeholder="可选择"
+                      clearable
                       :options="customerTypeOptions"
                     />
                   </td>
                   <td>
-                    <n-input v-model:value="model.customerNameSearch" placeholder="" />
+                    <n-input v-model:value="model.customerNameSearch" clearable placeholder="" />
                   </td>
                   <td>
-                    <n-input v-model:value="model.phoneSearch" placeholder="" />
+                    <n-input v-model:value="model.phoneSearch" clearable placeholder="" />
                   </td>
                 </tr>
               </tbody>
@@ -133,6 +133,7 @@
 import { defineComponent, Ref, ref } from 'vue';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
 import { getVehicleByCustomerId, addAttorney, getCustomerByParams } from '@/apis';
+import {onMounted} from 'vue';
 
 const data:Ref<{
   customerId: number;
@@ -153,6 +154,40 @@ const dataCar:Ref<{
 
 export default defineComponent({
   setup() {
+    onMounted(() => {
+    let tempcustomerNameSearch = model.value.customerNameSearch !== '' ? model.value.customerNameSearch : null;
+    let tempcustomerTypeSearch = model.value.customerTypeSearch !== '' ? model.value.customerTypeSearch : null;
+    let tempphoneSearch = model.value.phoneSearch !== '' ? model.value.phoneSearch : null;
+    getCustomerByParams({
+      name: tempcustomerNameSearch,
+      type: tempcustomerTypeSearch,
+      phone: tempphoneSearch
+    })
+      .then(
+        (res: {
+          customers: Array<{
+            customerId: number;
+            customerName: string;
+            customerType: string;
+            discountRate: number;
+            contactPerson: string;
+            phone: string;
+          }>;
+        }) => {
+          console.log(res);
+          data.value.length = 0;
+          console.log(data.value[0]);
+          for(let i =0; i < res.customers.length ; i++){
+            data.value[i]=res.customers[i];
+            console.log(data.value[i]);
+          }
+        }
+      )
+      .catch((error: any) => {
+        console.log(error);
+        message.error('查询失败');
+      });
+  });
     const dataTableInstRef = ref(null);
     const dataTableInstRef2 = ref(null);
     const formRef = ref<FormInst | null>(null);
@@ -185,7 +220,7 @@ export default defineComponent({
       columnsCar,
       dataTableInst: dataTableInstRef,
       dataTableInst2: dataTableInstRef2,
-      pagination: ref({ pageSize: 10 }),
+      pagination: ref({ pageSize: 12 }),
       pagination2: ref({ pageSize: 5 }),
       repairTypeOption: ['普通', '加急'].map(v => ({
         label: v,
