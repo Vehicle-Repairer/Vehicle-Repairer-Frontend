@@ -66,10 +66,10 @@ service.interceptors.response.use(
                     case 408:
                         break;
                     case 422:
-                        window.$message.error('请求参数错误');
+                        window.$message.error(res.message);
                         break;
                     case 500:
-                        window.$message.error('服务器错误');
+                        window.$message.error(res.message);
                         break;
                     case 501:
                         break;
