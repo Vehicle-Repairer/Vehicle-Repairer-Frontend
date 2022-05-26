@@ -222,17 +222,17 @@ export default defineComponent({
                 itemName: {
                     required: true,
                     trigger: ['blur', 'input'],
-                    message: '请输入客户编号'
+                    message: '请输入项目名称'
                 },
                 needTime: {
                     required: true,
                     trigger: ['blur', 'input'],
-                    message: '请输入车架号'
+                    message: '请输入工时'
                 },
                 profession: {
                     required: true,
                     trigger: ['blur', 'input'],
-                    message: '请输入车牌号'
+                    message: '请输入负责工种'
                 }
             },
             sortId() {
