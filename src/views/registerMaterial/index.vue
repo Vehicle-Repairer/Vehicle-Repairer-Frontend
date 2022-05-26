@@ -211,10 +211,10 @@ export default defineComponent({
                 }
             },
             sortId() {
-                dataTableInstRef.value.sort('customerId', 'ascend');
+                dataTableInstRef.value.sort('partId', 'ascend');
             },
             sortDiscount() {
-                dataTableInstRef.value.sort('discountRate', 'ascend');
+                dataTableInstRef.value.sort('assignmentId', 'ascend');
             },
             partHandleButtonClick(e: MouseEvent) {
                 formRef.value?.validate(errors => {
@@ -317,7 +317,7 @@ const columnsPart = [
         key: 'partId',
         defaultSortOrder: false,
         sorter: {
-            compare: (a: any, b: any) => a.customerId - b.customerId,
+            compare: (a: any, b: any) => a.partId - b.partId,
             multiple: 3
         }
     },
@@ -337,7 +337,7 @@ const columnsAssignment = [
         key: 'assignmentId',
         defaultSortOrder: false,
         sorter: {
-            compare: (a: any, b: any) => a.customerId - b.customerId,
+            compare: (a: any, b: any) => a.assignmentId - b.assignmentId,
             multiple: 3
         }
     },

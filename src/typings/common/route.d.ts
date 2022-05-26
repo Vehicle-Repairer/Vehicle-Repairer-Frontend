@@ -18,7 +18,6 @@ declare namespace AuthRoute {
         | 'personalInfo2'
         | 'registerMaterial'
         | 'myWorkOrder'
-        | 'test'
         | 'not-found'
         | 'no-permission'
         | 'service-error'

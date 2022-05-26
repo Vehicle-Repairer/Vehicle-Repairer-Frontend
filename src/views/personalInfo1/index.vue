@@ -144,6 +144,10 @@ export default defineComponent({
                             dataAttorney.value[i] = res.attorneys[i];
                             console.log(dataAttorney.value[i]);
                         }
+                        for (let i = 0; i < dataAttorney.value.length; i++) {
+                            dataAttorney.value[i].inFactoryTime = dataAttorney.value[i].inFactoryTime.slice(0,10);
+                        }
+
                     }
                 )
                 .catch((error: any) => {
@@ -293,10 +297,6 @@ const columnsAttorney = [
         title: '维修类别',
         key: 'repairType',
         defaultSortOrder: true,
-        sorter: {
-            compare: (a: any, b: any) => a.repairType - b.repairType,
-            multiple: 3
-        }
     },
     {
         title: '作业类型',
