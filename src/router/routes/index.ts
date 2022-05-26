@@ -11,17 +11,6 @@ export const sidebarRoutes: AuthRoute.Route[] = [
         }
     },
     {
-        name:'test',
-        path: '/test',
-        component: 'self',
-        meta: {
-            title: '休息一下看星星吧',
-            icon: 'ph:star-bold',
-            requiresAuth: true,
-            singleLayout: 'basic'
-        }
-    },
-    {
         name:'personalInfo1',
         path: '/personalInfo1',
         component: 'self',

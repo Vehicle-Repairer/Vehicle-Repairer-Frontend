@@ -19,10 +19,6 @@
         </div>
         <div class="flex items-center h-full">
             <div class="flex items-center text-semobold mr-3 gap-2">
-                <div>
-                    <icon-ri:calendar-2-fill class="text-20px"/>
-                </div>
-                {{ '2022-04-04' }}
             </div>
             <!-- <global-search /> -->
             <github-site/>

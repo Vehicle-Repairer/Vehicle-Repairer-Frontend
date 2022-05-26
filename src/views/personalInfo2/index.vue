@@ -257,10 +257,7 @@ export default defineComponent({
                 },
             },
             sortId() {
-                dataTableInstRef.value.sort('customerId', 'ascend');
-            },
-            sortDiscount() {
-                dataTableInstRef.value.sort('discountRate', 'ascend');
+                dataTableInstRef.value.sort('assignmentId', 'ascend');
             },
 
             handleButtonClick(e: MouseEvent) {
@@ -331,7 +328,7 @@ const columns = [
         key: 'assignmentId',
         defaultSortOrder: false,
         sorter: {
-            compare: (a: any, b: any) => a.customerId - b.customerId,
+            compare: (a: any, b: any) => a.assignmentId - b.assignmentId,
             multiple: 3
         }
     },

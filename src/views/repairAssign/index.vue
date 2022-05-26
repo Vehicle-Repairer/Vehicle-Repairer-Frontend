@@ -255,7 +255,7 @@ export default defineComponent({
                 }
             },
             sortId() {
-                dataTableInstRef.value.sort('customerId', 'ascend');
+                dataTableInstRef.value.sort('id', 'ascend');
             },
             sortDiscount() {
                 dataTableInstRef.value.sort('discountRate', 'ascend');
@@ -420,7 +420,7 @@ const columnsRepair = [
         key: 'id',
         defaultSortOrder: false,
         sorter: {
-            compare: (a: any, b: any) => a.customerId - b.customerId,
+            compare: (a: any, b: any) => a.id - b.id,
             multiple: 3
         }
     },
