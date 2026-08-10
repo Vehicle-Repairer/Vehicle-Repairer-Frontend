@@ -38,8 +38,7 @@
         "src/**/*",
         "src/**/*.vue",
         "mock/**/*.ts",
-        "build/**/*.ts",
-        ".env-config.ts"
+        "build/**/*.ts"
     ],
     "exclude": [
         "/dist/**",
